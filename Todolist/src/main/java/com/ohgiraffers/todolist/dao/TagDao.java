@@ -17,7 +17,7 @@ public class TagDao {
         List<Tag> tag = new ArrayList<>();
         String tmpqry = QueryUtil.getQuery(query); // XML에서 쿼리 로드
 
-        try (PreparedStatement pstmt = connection.createStatement(tmpqry);
+        try (PreparedStatement pstmt = connection.prepareStatement(tmpqry);
            ResultSet rs = pstmt.executeQuery(tmpqry)){
             while (rs.next()) {
                 tag.add(new Tag(
