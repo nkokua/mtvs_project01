@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<queries>
+    <query id="getTodoByTagName">
+        SELECT
+        *
+        FROM tag
+        WHERE tag_name = ?
+    </query>
+    <query id="addTag">
+        UPADATE INTO tag (tag_name,todo_id);
+        VALUES(?,?)
+    </query>
+
+
+</queries>
