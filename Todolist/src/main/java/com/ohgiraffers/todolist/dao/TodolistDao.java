@@ -1,7 +1,7 @@
 package com.ohgiraffers.todolist.dao;
 
 import com.ohgiraffers.todolist.model.Todolist;
-import com.ohgiraffers.todolist.model.User;
+
 import com.ohgiraffers.todolist.util.QueryUtil;
 
 import java.sql.Connection;
@@ -13,8 +13,6 @@ public class TodolistDao extends Dao{
     public TodolistDao(Connection connection) {
         super(connection);
     }
-
-
 
     public boolean addTodolist(Todolist todo, String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드

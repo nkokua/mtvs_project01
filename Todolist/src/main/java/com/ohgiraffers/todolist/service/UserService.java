@@ -21,7 +21,7 @@ public class UserService {
     }
 
     // 사용자 조회
-    public User getUserById(int userId) {
+/*    public User getUserById(int userId) {
         return userDao.findUserById(userId);
     }
 
@@ -33,6 +33,6 @@ public class UserService {
     // 사용자 삭제
     public boolean deleteUser(int userId) {
         return userDao.deleteUser(userId    );
-    }
+    }*/
 }
 

@@ -25,7 +25,6 @@ public class TagDao extends Dao  {
 //                        라벨명 Todo -> todo(할일)
                         rs.getString("태그명"));
 //                        라벨명 태그명 -> tag_name(태그이름)
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
