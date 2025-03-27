@@ -32,7 +32,7 @@ public class UserService {
 
     // 사용자 삭제
     public boolean deleteUser(int userId) {
-        return userDao.deleteUser(userId);
+        return userDao.deleteUser(userId    );
     }
 }
 

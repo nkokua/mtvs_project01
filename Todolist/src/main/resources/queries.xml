@@ -1,18 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <queries>
-    <query id="getTodoByTagName">
+<!--JOIN 쿼리-->
+
+<!--특정태그를 가진 투두리스트를 조회하는-->
+    <query id="getTodoByTagId">
         SELECT
-        *
-        FROM tag
-        WHERE tag_name = ?
+        tl.todo AS "Todo" , t.tag_name AS "태그명"
+        FROM todolist tl
+        WHERE tag_id = ?
+        INNER JOIN tag_todo tt ON tt.todo_id = tl.todo_id
+        INNER JOIN tag t ON t.tag_id = tt.tag_id
     </query>
+
+
+<!--여기까지 복합쿼리-->
+
+
+
+<!--태그 쿼리-->
+
     <query id="addTag">
         UPDATE INTO tag (tag_name,todo_id)
         VALUES(?,?)
     </query>
+    <query id="get">
+
+    </query>
+<!--    여기까지 태그-->
+
+<!--    여기서부터 TagTodo -->
+    <!--    생성-->
+    <query id="addTagTodo">
+        INSERT INTO tag_todo (tag_id,todo_id)
+        VALUES(?,?)
+    </query>
+    <!--    특정태그ID의 -->
+    <query id="getTagID">
+
+    </query>
+
+<!--    여기까지 TagTodo-->
+
+
+<!--    여기서부터 유저-->
     <query id="addUser">
         INSERT INTO user (email,nickname,password)
         VALUES(?,?,?)
+    </query>
+    <query>
+
     </query>
 
 </queries>

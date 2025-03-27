@@ -13,6 +13,9 @@ public class TodolistDao extends Dao{
     public TodolistDao(Connection connection) {
         super(connection);
     }
+
+
+
     public boolean addTodolist(Todolist todo, String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
 
