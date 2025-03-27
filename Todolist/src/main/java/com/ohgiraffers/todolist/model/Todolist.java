@@ -1,6 +1,6 @@
 package com.ohgiraffers.todolist.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Todolist {
     private Integer todo_id;

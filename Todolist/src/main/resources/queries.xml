@@ -7,9 +7,12 @@
         WHERE tag_name = ?
     </query>
     <query id="addTag">
-        UPADATE INTO tag (tag_name,todo_id);
+        UPDATE INTO tag (tag_name,todo_id)
         VALUES(?,?)
     </query>
-
+    <query id="addUser">
+        INSERT INTO user (email,nickname,password)
+        VALUES(?,?,?)
+    </query>
 
 </queries>

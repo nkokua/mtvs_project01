@@ -3,38 +3,49 @@ package com.ohgiraffers.todolist.dao;
 import com.ohgiraffers.todolist.model.User;
 import com.ohgiraffers.todolist.util.QueryUtil;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 
-public class UserDao {
-    private final Connection connection;
-
+public class UserDao extends Dao {
     public UserDao(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        String query = QueryUtil.getQuery("getAllUsers"); // XML에서 쿼리 로드
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+    public boolean addUser(User user,String xmlqry) {
+        String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
 
-            while (rs.next()) {
-                users.add(new User(
-                        rs.getInt("user_id"),
-                        rs.getString("username"),
-                        rs.getString("email"),
-                        rs.getString("password_hash")
-                ));
-            }
+        try (PreparedStatement ptmt = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setString(1,user.getEmail());
+            ptmt.setString(2,user.getNickname());
+            ptmt.setString(3,user.getPassword());
+
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return users;
+        return false;
     }
+
+    public boolean deleteUser(User user,String xmlqry) {
+        String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
+        try (PreparedStatement ptmt = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setString(1,user.getEmail());
+            ptmt.setString(2,user.getNickname());
+            ptmt.setString(3,user.getPassword());
+
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
+    }
+
+
+
 }

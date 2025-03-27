@@ -3,22 +3,22 @@ package com.ohgiraffers.todolist.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import com.ohgiraffers.todolist.model.Tag;
 import com.ohgiraffers.todolist.util.QueryUtil;
 
-public class TagDao {
-    private final Connection connection;
+public class TagDao extends Dao  {
 
     public TagDao(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
-    public List<Tag> getAllUsers(String query) {
+    public List<Tag> getData(String xmlQry) {
         List<Tag> tag = new ArrayList<>();
-        String tmpqry = QueryUtil.getQuery(query); // XML에서 쿼리 로드
-
-        try (PreparedStatement pstmt = connection.prepareStatement(tmpqry);
-           ResultSet rs = pstmt.executeQuery(tmpqry)){
+        String query = QueryUtil.getQuery(xmlQry); // XML에서 쿼리 로
+        try (PreparedStatement pstmt = connection.prepareStatement(query);
+           ResultSet rs = pstmt.executeQuery()){
             while (rs.next()) {
                 tag.add(new Tag(
                         rs.getString("tag_name"),
