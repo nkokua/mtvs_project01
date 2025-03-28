@@ -55,11 +55,9 @@ public class TodolistView {
                     readAllTodolist();
                     break;
                 case 5:
-                    getTodoByTagId();
-                    break;
-                case 6:
                     tagView.showMenu();
                     break;
+
                 case 7:
                     break;
                 default:
@@ -70,21 +68,7 @@ public class TodolistView {
         }
     }
 
-    private void getTodoByTagId() {
-        try{
-            List<TagTodo> tagtodos = tagService.getTodoByTagId();
-            if (tagtodos.isEmpty()) {
-                System.out.println("📌 조회된 Todolist가 없습니다..");
-            } else {
-                System.out.println("\n📌 Todolist 목록:");
-                for (TagTodo tagtodo : tagtodos) {
-                    System.out.println(tagtodo);
-                }
-            }
-        }catch (SQLException e){
-            System.out.println("t o d o l i s t 조 회 오 류 발 생");
-        }
-    }
+
 
 
     private void readAllTodolist() {

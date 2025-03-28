@@ -52,7 +52,7 @@ public class UserView {
             email = input.nextLine();
             System.out.println("로그인 페이지 , 비밀번호를 입력해주세요");
             password = input.nextLine();
-            System.out.println("로그인 페이지 , 가입하시겠습니까? y/n");
+            System.out.println("로그인 페이지 , 로그인 하시겠습니까? y/n");
             inputValue = input.nextLine();
 
             if(inputValue.equals("y")){
@@ -61,7 +61,7 @@ public class UserView {
                 userService.loginUser(user);
                 return true;
             }else if(inputValue.equals("n")){
-                return true;
+                return false;
             }else {
                 System.out.println("제대로된 값을 입력해주세요.");
             }

@@ -29,7 +29,7 @@ public class TagView {
             System.out.println("3.삭제\n");
             System.out.println("4.태그 전체 조회\n");
             System.out.println("5.Todolist 페이지로");
-
+            System.out.println("6.태그 부여");
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
@@ -45,6 +45,12 @@ public class TagView {
                     readAllTag();
                     break;
                 case 5:
+                    return;
+                case 6:
+                    giveTagTodo();
+                    break;
+                case 7:
+                    getTodoByTagId();
                     break;
                 default:
                     System.out.println("잘못된 값이 입력되었습니다.");
@@ -52,6 +58,12 @@ public class TagView {
 
 
         }
+    }
+
+    private void giveTagTodo() {
+        System.out.println("부여할 태그ID");
+        int tagId = scanner.nextInt();
+
     }
 
     private void createTag() {
@@ -115,13 +127,32 @@ public class TagView {
     }
     private void readAllTag() {
         try{
-            List<TagTodo> tags = tagService.getAllTag();
+            List<Tag> tags = tagService.getAllTag();
             if (tags.isEmpty()) {
+                System.out.println("📌 조회된 태그가 없습니다..");
+            } else {
+                System.out.println("\n📌 태그 목록:");
+                for (Tag tag : tags) {
+                    System.out.println(tags);
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("t o d o l i s t 조 회 오 류 발 생");
+        }
+    }
+    private void getTodoByTagId() {
+        try{
+            System.out.print("검색할 태그 ID를 입력하세요: ");
+            int tagId = scanner.nextInt();
+            scanner.nextLine(); // 개행 문자 처리
+
+            List<TagTodo> tagtodos = tagService.getTodoByTagId(tagId);
+            if (tagtodos.isEmpty()) {
                 System.out.println("📌 조회된 Todolist가 없습니다..");
             } else {
                 System.out.println("\n📌 Todolist 목록:");
-                for (TagTodo tag : tags) {
-                    System.out.println(tags);
+                for (TagTodo tagtodo : tagtodos) {
+                    System.out.println(tagtodo);
                 }
             }
         }catch (SQLException e){

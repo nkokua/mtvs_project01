@@ -28,7 +28,7 @@ public class TodolistService {
     }
 
     public List<TagTodo> getAllTodolist() throws SQLException{
-        List<TagTodo> tagtodos = tagDao.getTodoByTagId("getTodoByTagId");
+        List<TagTodo> tagtodos = tagDao.getAllData("getAllData");
         return tagtodos;
     };
 

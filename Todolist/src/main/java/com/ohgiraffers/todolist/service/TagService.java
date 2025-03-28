@@ -1,6 +1,7 @@
 package com.ohgiraffers.todolist.service;
 
 import com.ohgiraffers.todolist.dao.TagDao;
+import com.ohgiraffers.todolist.dao.TagTodoDao;
 import com.ohgiraffers.todolist.dao.TodolistDao;
 import com.ohgiraffers.todolist.model.Tag;
 import com.ohgiraffers.todolist.model.TagTodo;
@@ -16,10 +17,12 @@ public class TagService {
         this.con = con;
         this.tagDao = new TagDao(con);
     }
-    public List<TagTodo> getAllTag() throws SQLException{
+    public List<Tag> getAllTag() throws SQLException{
         return tagDao.getAllData("");
     }
-
+    public List<TagTodo> getTodoByTagId(int tagId) throws SQLException{
+        return tagDao.getTodoByTagId(tagId,"getTodoByTagId");
+    }
     public boolean createTag(Tag tag) throws SQLException {
         return true;
     }

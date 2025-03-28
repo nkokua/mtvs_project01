@@ -11,6 +11,7 @@ public class ShowMain {
     public ShowMain(Connection con) {
       userView = new UserView(con);
       input = new Scanner(System.in);
+      todolistView = new TodolistView(con);
     }
 
     public boolean run(){
