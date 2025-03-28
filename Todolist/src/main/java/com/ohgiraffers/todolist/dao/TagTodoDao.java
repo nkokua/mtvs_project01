@@ -1,7 +1,9 @@
 package com.ohgiraffers.todolist.dao;
+import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.util.QueryUtil;
 import java.sql.Connection;
 import java.sql.*;
+import java.util.List;
 
 public class TagTodoDao extends Dao{
     public TagTodoDao(Connection connection) {
@@ -17,5 +19,7 @@ public class TagTodoDao extends Dao{
             e.printStackTrace();
         }
         return false;
+    }
+    public List<TagTodo> getAllTagTodo(String getTodoByTagId) {
     }
 }

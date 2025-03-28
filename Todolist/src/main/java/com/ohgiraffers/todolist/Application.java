@@ -1,7 +1,7 @@
 package com.ohgiraffers.todolist;
 
 import com.ohgiraffers.todolist.config.JDBCConnection;
-import com.ohgiraffers.todolist.view.MainView;
+import com.ohgiraffers.todolist.view.ShowMain;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class Application {
             throw new RuntimeException(e);
         }
         System.out.println("원하시는 기능을 입력해주세요");
-        MainView view = new MainView(con);
+        ShowMain view = new ShowMain(con);
         view.run();
         JDBCConnection.close();
     }

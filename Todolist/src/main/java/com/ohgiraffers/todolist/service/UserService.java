@@ -3,14 +3,18 @@ package com.ohgiraffers.todolist.service;
 import com.ohgiraffers.todolist.dao.UserDao;
 import com.ohgiraffers.todolist.model.User;
 
-public class UserService {
+import java.sql.Connection;
 
+public class UserService {
+    private final Connection connection;
     private UserDao userDao;  // UserDao 클래스가 데이터베이스와의 상호작용을 담당
 
     // 생성자
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserService(Connection con) {
+        this.connection = con;
+        this.userDao = new UserDao(con);
     }
+
 
     // 사용자 등록
     public boolean registerUser(User user) {
@@ -18,6 +22,10 @@ public class UserService {
             return false;
         }
         return userDao.addUser(user,"addUser");  // userDao는 사용자 데이터를 저장하는 역할
+    }
+
+    public void loginUser(User user) {
+//      나중에만들어!!
     }
 
     // 사용자 조회
