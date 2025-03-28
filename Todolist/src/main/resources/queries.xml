@@ -13,7 +13,7 @@
     </query>
 
 
-<!--여기까지 복합쿼리-->
+<!--여기까지 JOIN쿼리-->
 
 
 
@@ -23,10 +23,11 @@
         UPDATE INTO tag (tag_name,todo_id)
         VALUES(?,?)
     </query>
-    <query id="get">
+    <query id="getAllTag">
+        SELECT *
 
     </query>
-<!--    여기까지 태그-->
+<!--    여기까지 태그쿼리-->
 
 <!--    여기서부터 TagTodo -->
     <!--    생성-->

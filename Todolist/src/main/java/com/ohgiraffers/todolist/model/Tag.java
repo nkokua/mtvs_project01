@@ -2,11 +2,15 @@ package com.ohgiraffers.todolist.model;
 
 public class Tag {
     private String tagName;
-    private int todoId;
+    private int tagId;
 
-    public Tag(String tagName, int todoId) {
+    public Tag(int tagId,String tagName) {
         this.tagName = tagName;
-        this.todoId = todoId;
+        this.tagId = tagId;
+    }
+
+    public Tag(String tagName) {
+        this.tagName = tagName;
     }
 
     public String getTagName() {
@@ -18,18 +22,18 @@ public class Tag {
     }
 
     public Integer getTodoId() {
-        return todoId;
+        return tagId;
     }
 
-    public void setTodoId(int todoId) {
-        this.todoId = todoId;
+    public void setTodoId(int tagId) {
+        this.tagId = tagId;
     }
 
     @Override
     public String toString() {
         return "Tag{" +
                 "tagName='" + tagName + '\'' +
-                ", todoId=" + todoId +
+                ", todoId=" + tagId +
                 '}';
     }
 }

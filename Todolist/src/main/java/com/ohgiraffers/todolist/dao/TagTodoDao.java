@@ -3,6 +3,7 @@ import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.util.QueryUtil;
 import java.sql.Connection;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TagTodoDao extends Dao{
@@ -20,6 +21,5 @@ public class TagTodoDao extends Dao{
         }
         return false;
     }
-    public List<TagTodo> getAllTagTodo(String getTodoByTagId) {
-    }
+
 }

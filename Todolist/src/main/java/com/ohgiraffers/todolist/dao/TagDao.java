@@ -39,8 +39,8 @@ public class TagDao extends Dao  {
            ResultSet rs = pstmt.executeQuery()){
             while (rs.next()) {
                 tag.add(new Tag(
-                        rs.getString("tag_name"),
-                        rs.getInt("todo_id")
+                        rs.getInt("todo_id"),
+                        rs.getString("tag_name")
                 ));
             }
         } catch (SQLException e) {
@@ -48,5 +48,6 @@ public class TagDao extends Dao  {
         }
         return tag;
     }
+
 
 }

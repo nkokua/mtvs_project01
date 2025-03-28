@@ -4,6 +4,7 @@ import com.ohgiraffers.todolist.model.Tag;
 import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.model.Todolist;
 import com.ohgiraffers.todolist.model.User;
+import com.ohgiraffers.todolist.service.TagService;
 import com.ohgiraffers.todolist.service.TodolistService;
 import com.ohgiraffers.todolist.service.UserService;
 
@@ -16,11 +17,13 @@ public class TodolistView {
     private Scanner scanner ;
     private String inputValue;
     TodolistService todolistService;
+    TagService tagService;
     Todolist todo;
     private TagView tagView;
 
     public TodolistView(Connection con) {
         todolistService = new TodolistService(con);
+        tagService = new TagService(con);
         scanner = new Scanner(System.in);
         tagView = new TagView(con);
     }
@@ -32,9 +35,9 @@ public class TodolistView {
             System.out.println("2.수정\n");
             System.out.println("3.삭제\n");
             System.out.println("4.전체 조회\n");
-            System.out.println("5.특정 태그 리스트 조회");
-            System.out.println("6.태그 페이지로 이동");
-            System.out.println("7.메인페이지로");
+            System.out.println("5.특정 태그 리스트 조회\n");
+            System.out.println("6.태그 페이지로 이동\n");
+            System.out.println("7.메인페이지로\n:");
 
 
             int choice = scanner.nextInt();
@@ -52,7 +55,7 @@ public class TodolistView {
                     readAllTodolist();
                     break;
                 case 5:
-//                    getAllTodoById();
+                    getTodoByTagId();
                     break;
                 case 6:
                     tagView.showMenu();
@@ -67,13 +70,30 @@ public class TodolistView {
         }
     }
 
+    private void getTodoByTagId() {
+        try{
+            List<TagTodo> tagtodos = tagService.getTodoByTagId();
+            if (tagtodos.isEmpty()) {
+                System.out.println("📌 조회된 Todolist가 없습니다..");
+            } else {
+                System.out.println("\n📌 Todolist 목록:");
+                for (TagTodo tagtodo : tagtodos) {
+                    System.out.println(tagtodo);
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("t o d o l i s t 조 회 오 류 발 생");
+        }
+    }
+
+
     private void readAllTodolist() {
         try{
             List<TagTodo> tagtodos = todolistService.getAllTodolist();
             if (tagtodos.isEmpty()) {
-                System.out.println("📌 조회된 강의가 없습니다.");
+                System.out.println("📌 조회된 Todolist가 없습니다..");
             } else {
-                System.out.println("\n📌 강의 목록:");
+                System.out.println("\n📌 Todolist 목록:");
                 for (TagTodo tagtodo : tagtodos) {
                     System.out.println(tagtodo);
                 }
@@ -84,16 +104,65 @@ public class TodolistView {
     }
 
     private void createTodo() {
+        System.out.print("등록할 Todo를 입력하세요: ");
+        String todo = scanner.nextLine();
 
+        Todolist todolist = new Todolist(todo);
+        try {
+            boolean success = todolistService.addTodo(todolist);
+            if (success) {
+                System.out.println("Todolist 등록 성공하였습니다.");
+            } else {
+                System.out.println("Todolist 등록에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Todolist 등록 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
     private void updateTodo(){
+        System.out.print("수정할 Todo ID를 입력하세요: ");
+        int todoId = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 처리
 
+        System.out.print("새로운 Todo: ");
+        String username = scanner.nextLine();
+
+        Todolist todolist = new Todolist(todo);
+        try {
+            boolean success = todolistService.addTodo(todolist);
+            if (success) {
+                System.out.println("Todolist 수정 성공하였습니다.");
+            } else {
+                System.out.println("Todolist 수정에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Todolist 수정 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void deleteTodo(){
+        System.out.print("삭제할 사용자 ID를 입력하세요: ");
+        int todoId = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 처리
 
+        try {
+            boolean success = todolistService.deleteTodo(todoId);
+            if (success) {
+                System.out.println("사용자가 성공적으로 삭제되었습니다.");
+            } else {
+                System.out.println("사용자 삭제에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("사용자 삭제 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 

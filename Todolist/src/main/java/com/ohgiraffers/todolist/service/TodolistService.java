@@ -13,13 +13,14 @@ import java.util.List;
 
 public class TodolistService {
     private TodolistDao todoDao;
-    private TagTodoDao tagtodoDao;
+    private TagDao tagDao;
     private final Connection connection;
     public TodolistService(Connection con) {
         this.connection = con;
         this.todoDao = new TodolistDao(con);
+        this.tagDao = new TagDao(con);
     }
-    public boolean addTodo(Todolist todo) {
+    public boolean addTodo(Todolist todo) throws SQLException{
         if (todo == null || todo.getTodo().isEmpty() ) {
             return false;
         }
@@ -27,7 +28,12 @@ public class TodolistService {
     }
 
     public List<TagTodo> getAllTodolist() throws SQLException{
-        List<TagTodo> tagtodos = tagtodoDao.getAllTagTodo("getTodoByTagId");
+        List<TagTodo> tagtodos = tagDao.getTodoByTagId("getTodoByTagId");
         return tagtodos;
     };
+
+    public boolean deleteTodo(int todoId) throws SQLException{
+//        return tagDao.
+        return true;
+    }
 }

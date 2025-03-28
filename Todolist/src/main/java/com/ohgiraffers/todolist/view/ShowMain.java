@@ -30,9 +30,9 @@ public class ShowMain {
                      }
                      break;
                  case "3":
-
                      return true;
                  default:
+                     System.out.println("잘못된 값을 입력 하셨 습 니 다 ");
              }
          }
     }

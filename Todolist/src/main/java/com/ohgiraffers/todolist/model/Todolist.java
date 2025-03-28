@@ -10,6 +10,12 @@ public class Todolist {
     private Date completionDate;
     private char isCompleted;
 
+    public Todolist(String todo) {
+    }
+
+    public Todolist(Todolist todo) {
+    }
+
     public Integer getTodo_id() {
         return todo_id;
     }
