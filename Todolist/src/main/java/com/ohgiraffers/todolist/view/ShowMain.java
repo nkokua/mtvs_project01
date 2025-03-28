@@ -3,13 +3,13 @@ package com.ohgiraffers.todolist.view;
 import java.sql.Connection;
 import java.util.Scanner;
 
-public class MainView extends View {
+public class MainView  {
     Scanner input = new Scanner(System.in);
     private String inputValue;
     private RegisterView registerView = new RegisterView(super.con);
-
+    private final Connection connection;
     public MainView(Connection con) {
-        super(con);
+        (con);
     }
 
     public boolean run(){
