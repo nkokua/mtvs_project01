@@ -4,6 +4,7 @@ import com.ohgiraffers.todolist.model.Tag;
 import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.model.Todolist;
 import com.ohgiraffers.todolist.service.TagService;
+import com.ohgiraffers.todolist.service.TagTodoService;
 import com.ohgiraffers.todolist.service.TodolistService;
 
 import java.sql.Connection;
@@ -15,9 +16,11 @@ public class TagView {
     private Scanner scanner ;
     private String inputValue;
     TagService tagService;
+    TagTodoService tagTodoService;
     Tag tag;
     public TagView(Connection con) {
         tagService = new TagService(con);
+        tagTodoService = new TagTodoService(con);
         scanner = new Scanner(System.in);
     }
 
@@ -65,15 +68,27 @@ public class TagView {
     private void giveTagTodo() {
         System.out.println("부여할 태그ID");
         int tagId = scanner.nextInt();
-
+        scanner.nextLine();
+        System.out.println("부여할 todoID");
+        int todoId = scanner.nextInt();
+        scanner.nextLine();
+        try {
+            boolean success = tagTodoService.createTagTodo(tagId,todoId);
+            if (success) {
+                System.out.println("사용자가 성공적으로 등록되었습니다.");
+            } else {
+                System.out.println("사용자 등록에 실패하였습니다.");
+            }
+        } catch (SQLException e) {
+            System.out.println("사용자 등록 중 오류가 발생했습니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void createTag() {
-
         System.out.print("태그이름: ");
         String tagName = scanner.nextLine();
-
-
         Tag tag = new Tag(tagName);
         try {
             boolean success = tagService.createTag(tag);

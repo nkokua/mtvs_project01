@@ -19,28 +19,28 @@ public class UserService {
     // 사용자 등록
     public boolean registerUser(User user) {
         if (user == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
+            System.out.println("입력값이 비어있습니다!");
             return false;
         }
-        return userDao.addUser(user,"addUser");  // userDao는 사용자 데이터를 저장하는 역할
+        if (userDao.existsUser(user.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 태그입니다.");
+        }
+        return userDao.addUser(user,"addUser");
     }
 
-    public void loginUser(User user) {
-//      나중에만들어!!
+    public boolean loginUser(User user) {
+        if (user == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
+            System.out.println("입력값이 비어있습니다!");
+            return false;
+        }
+        // 이메일 존재여부 확인후 비밀번호 존재여부 확인.
+        if(user.getEmail().equals(userDao.getUser().getEmail())){
+            if(userDao.getUser().getPassword().equals(user.getPassword())){
+                return true;
+            }
+        };
+        return false;
     }
 
-    // 사용자 조회
-/*    public User getUserById(int userId) {
-        return userDao.findUserById(userId);
-    }
-
-    // 사용자 정보 수정
-    public boolean updateUser(User user) {
-        return userDao.updateUser(user);  // 수정된 사용자 정보를 DB에 업데이트
-    }
-
-    // 사용자 삭제
-    public boolean deleteUser(int userId) {
-        return userDao.deleteUser(userId    );
-    }*/
 }
 

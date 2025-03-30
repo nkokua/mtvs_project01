@@ -101,7 +101,7 @@ public class TodolistView {
         Todolist todolist = new Todolist(todo);
 
         try {
-            boolean success = todolistService.addTodo(todolist);
+            boolean success = todolistService.updateTodo(todolist);
             if (success) {
                 System.out.println("Todolist 수정 성공하였습니다.");
             } else {
@@ -135,33 +135,6 @@ public class TodolistView {
 
 
     private void getAllTodo() {
-
-    }
-
-    private void checkCompletionTodo(){
-        System.out.print("완료여부를 체크할 id를 입력해주세요");
-        int todoId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
-
-        try {
-            boolean success = todolistService.checkCompletionTodo(todoId);
-            if (success) {
-                System.out.println("todolist 체크 완료!");
-            } else {
-                System.out.println("완료여부 체크 실패하였습니다.");
-            }
-        } catch (SQLException e) {
-            System.out.println("체크중 오류발생!");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-
-
-/*
-
-    private void getAllTodolist() {
         try{
             List<TagTodo> tagtodos = todolistService.getAllTodolist();
             if (tagtodos.isEmpty()) {
@@ -176,7 +149,27 @@ public class TodolistView {
             System.out.println("t o d o l i s t 조 회 오 류 발 생");
         }
     }
-*/
+
+    private void checkCompletionTodo(){
+        System.out.print("완료여부를 체크할 id를 입력해주세요");
+        int todoId = scanner.nextInt();
+        scanner.nextLine(); // 개행 문자 처리
+
+        try {
+            boolean success = todolistService.checkCompletionTodo(todoId);
+            if (success) {
+                System.out.println("todolist 체크 완료!");
+            } else {
+                System.out.println("완료여부 체크 실패하였습니다.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+
 
 
 

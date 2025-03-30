@@ -14,6 +14,11 @@ public class Todolist {
         this.todo = todo;
     }
 
+    public Todolist(String todo, char isCompleted) {
+        this.todo = todo;
+        this.isCompleted = isCompleted;
+    }
+
 
     public int getTodo_id() {
         return todo_id;

@@ -41,6 +41,15 @@ public class TagTodo {
         this.tagName = tagName;
     }
 
+    public TagTodo(int tagId) {
+        this.tagId = tagId;
+    }
+
+    public TagTodo(int tagId, int todoId) {
+        this.tagId = tagId;
+        this.todoId = todoId;
+    }
+
 
     public int getTagId() {
         return tagId;

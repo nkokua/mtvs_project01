@@ -21,11 +21,11 @@ public class Tag {
         this.tagName = tagName;
     }
 
-    public Integer getTodoId() {
+    public Integer getTagId() {
         return tagId;
     }
 
-    public void setTodoId(int tagId) {
+    public void setTagId(int tagId) {
         this.tagId = tagId;
     }
 

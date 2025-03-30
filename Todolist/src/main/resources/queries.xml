@@ -54,9 +54,10 @@
         INSERT INTO tag_todo (tag_id,todo_id)
         VALUES(?,?)
     </query>
-    <!--    특정태그ID의 -->
-    <query id="getTagID">
-
+    <!--    TagTodo전체조회 -->
+    <query id="getAllTagTodo">
+        SELECT *
+        FROM tag_todo
     </query>
 
 <!--    여기까지 TagTodo-->

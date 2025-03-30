@@ -13,7 +13,6 @@ public class TodolistDao extends Dao{
     public TodolistDao(Connection connection) {
         super(connection);
     }
-
     public boolean addTodolist(Todolist todo, String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
 
@@ -30,8 +29,63 @@ public class TodolistDao extends Dao{
         }
         return false;
     }
+//    todolist에서 todo와 iscompleted 불러옴
+public Todolist getTodoById(int todoId) throws SQLException {
+        String query = QueryUtil.getQuery("getTodoById");
+        Todolist todolist = null;
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setInt(1, todoId);
+            try (ResultSet rs = ptmt.executeQuery()) {
+                if (rs.next()) {
+    //                        todo_id AS "TodoID",
+    //                                tl.todo AS "Todo",
+    //                                tl.iscompleted AS "완료 여부"
+                    todolist = new Todolist(
+                            rs.getString("Todo"),
+                            rs.getString("완료 여부").charAt(0)
+                    );
+                }
+            }
+        }
+    return todolist;
+}
+    public boolean deleteTodo(int todoId) throws SQLException {
+        String query = QueryUtil.getQuery("deleteTodo");
+        try (PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setInt(1, todoId);
+            return pstmt.executeUpdate() > 0; // 삭제된 행이 있으면 true 반환
+        }
+    }
 
-    public List<TagTodo> getAllTodolist(String getAllData) {
+//투두리스트 업데이트 todo내용을.
+    public boolean updateTodo(Todolist todo) {
+        String query = QueryUtil.getQuery("updateTodo"); // XML에서 쿼리 로드
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setInt(1,todo.getTodo_id());
+            ptmt.setString(2,todo.getTodo());
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateCompletionTodo(int todoId, char isCompleted) {
+        String query = QueryUtil.getQuery("updateCompletionTodo"); // XML에서 쿼리 로드
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setInt(1,todoId);
+            ptmt.setString(2, String.valueOf(isCompleted));
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+//투두리스트태그붙여서모든것을 조회하는 함수
+    public List<TagTodo> getAllTodolist(String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
         List<TagTodo> tagTodos = new ArrayList<>();
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -49,7 +103,7 @@ public class TodolistDao extends Dao{
                                 rs.getString("태그명"),
                                 rs.getDate("생성일"),
                                 rs.getDate("완료일"),
-                                rs.getString("완료 여부")
+                                rs.getString("완료 여부").charAt(0)
                                 ));
                     }
             }
@@ -59,4 +113,5 @@ public class TodolistDao extends Dao{
         }
         return tagTodos;
     }
+
 }

@@ -58,8 +58,7 @@ public class UserView {
             if(inputValue.equals("y")){
                 /*서비스로 전달*/
                 user= new User(email,password);
-                userService.loginUser(user);
-                return true;
+                return userService.loginUser(user);
             }else if(inputValue.equals("n")){
                 return false;
             }else {

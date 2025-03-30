@@ -1,9 +1,12 @@
 package com.ohgiraffers.todolist.dao;
 
+import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.model.User;
 import com.ohgiraffers.todolist.util.QueryUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao extends Dao {
     public UserDao(Connection connection) {
@@ -28,6 +31,45 @@ public class UserDao extends Dao {
         return false;
     }
 
+
+
+    public boolean existsUser(String email) {
+        String query = QueryUtil.getQuery("getExists");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1,email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // todoId 존재하면 반환
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public User getUser() {
+        User user = null;
+        String query = QueryUtil.getQuery("getUser"); // XML에서 쿼리 로드
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            try(ResultSet rs = ptmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                            rs.getString("email"),
+                            rs.getString("password")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
+
+
     public boolean deleteUser(User user,String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
         try (PreparedStatement ptmt = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
@@ -45,7 +87,5 @@ public class UserDao extends Dao {
 
         return false;
     }
-
-
 
 }
