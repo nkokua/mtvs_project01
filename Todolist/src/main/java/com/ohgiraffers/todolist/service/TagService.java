@@ -18,7 +18,7 @@ public class TagService {
         this.tagDao = new TagDao(con);
     }
     public List<Tag> getAllTag() throws SQLException{
-        return tagDao.getAllData("");
+        return tagDao.getAllTag("get");
     }
     public List<TagTodo> getTodoByTagId(int tagId) throws SQLException{
         return tagDao.getTodoByTagId(tagId,"getTodoByTagId");

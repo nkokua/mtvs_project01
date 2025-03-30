@@ -16,6 +16,7 @@ public class ShowMain {
 
     public boolean run(){
          while(true){
+
              System.out.println("1 : 회원가입 ");
              System.out.println("\n2 : 로그인 ");
              System.out.println("\n3 : 종료 ");

@@ -10,7 +10,7 @@ public class TagTodoDao extends Dao{
     public TagTodoDao(Connection connection) {
         super(connection);
     }
-    public boolean addData(int tag_id,int todo_id, String xmlQry) {
+    public boolean addTagTodo(int tag_id,int todo_id, String xmlQry) {
         String query = QueryUtil.getQuery(xmlQry);
         try(PreparedStatement ptmt = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
         ){

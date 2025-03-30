@@ -3,7 +3,7 @@ package com.ohgiraffers.todolist.model;
 import java.sql.Date;
 
 public class Todolist {
-    private Integer todo_id;
+    private int todo_id;
     private String todo;
     private int memberId;
     private Date creationDate;
@@ -11,12 +11,11 @@ public class Todolist {
     private char isCompleted;
 
     public Todolist(String todo) {
+        this.todo = todo;
     }
 
-    public Todolist(Todolist todo) {
-    }
 
-    public Integer getTodo_id() {
+    public int getTodo_id() {
         return todo_id;
     }
 

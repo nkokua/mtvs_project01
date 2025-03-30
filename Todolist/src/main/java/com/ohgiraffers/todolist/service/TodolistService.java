@@ -28,12 +28,16 @@ public class TodolistService {
     }
 
     public List<TagTodo> getAllTodolist() throws SQLException{
-        List<TagTodo> tagtodos = tagDao.getAllData("getAllData");
+        List<TagTodo> tagtodos = todoDao.getAllTodolist("getAllData");
         return tagtodos;
     };
 
     public boolean deleteTodo(int todoId) throws SQLException{
 //        return tagDao.
         return true;
+    }
+
+    public boolean checkCompletionTodo(int todoId) {
+        return false;
     }
 }

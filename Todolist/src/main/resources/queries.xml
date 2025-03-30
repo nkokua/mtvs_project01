@@ -5,11 +5,16 @@
 <!--특정태그를 가진 투두리스트를 조회하는-->
     <query id="getTodoByTagId">
         SELECT
-        tl.todo AS "Todo" , t.tag_name AS "태그명"
+        tl.todo_id AS "TodoID",
+        tl.todo AS "Todo",
+        t.tag_name AS "태그명",
+        tl.creation_date AS "생성일",
+        tl.completion_date "완료일",
+        tl.iscompleted AS "완료 여부"
         FROM todolist tl
-        WHERE tag_id = ?
         INNER JOIN tag_todo tt ON tt.todo_id = tl.todo_id
         INNER JOIN tag t ON t.tag_id = tt.tag_id
+        WHERE t.tag_id = ?;
     </query>
 
 
@@ -18,18 +23,32 @@
 
 
 <!--태그 쿼리-->
-
-    <query id="addTag">
-        UPDATE INTO tag (tag_name,todo_id)
-        VALUES(?,?)
+    <!--생성-->
+    <query id="createTag">
+        INSERT INTO tag (tag_name)
+        VALUES(?)
     </query>
+    <!--태그수정-->
+    <query id="updateTag">
+        UPDATE tag
+        SET tag_name = ?
+        WHERE tag_id = ?
+    </query>
+    <query id="deleteTag">
+        DELETE FROM tag
+        WHERE tag_id = ?;
+    </query>
+    <!--태그전체조회 -->
     <query id="getAllTag">
         SELECT *
-
+        FROM tag
     </query>
+    <query id="give">
+    </query>
+
 <!--    여기까지 태그쿼리-->
 
-<!--    여기서부터 TagTodo -->
+<!--    여기서부터 TagTodo DAO관리-->
     <!--    생성-->
     <query id="addTagTodo">
         INSERT INTO tag_todo (tag_id,todo_id)

@@ -28,8 +28,10 @@ public class TagView {
             System.out.println("2.수정\n");
             System.out.println("3.삭제\n");
             System.out.println("4.태그 전체 조회\n");
-            System.out.println("5.Todolist 페이지로");
-            System.out.println("6.태그 부여");
+            System.out.println("5.Todolist 페이지로\n");
+            System.out.println("6.태그 부여\n");
+            System.out.println("7.특정 태그 조회\n");
+
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
@@ -89,7 +91,7 @@ public class TagView {
     }
 
     private void updateTag() {
-        System.out.print("태그id: ");
+        System.out.print("수정할 태그 id: ");
         int tagId = scanner.nextInt();
 
         System.out.print("태그이름: ");
