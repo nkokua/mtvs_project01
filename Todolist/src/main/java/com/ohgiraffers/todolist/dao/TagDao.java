@@ -54,8 +54,8 @@ public class TagDao extends Dao {
     }
     //같은이름의 태그존재조회. 수정요망
     public boolean existsTag(String tagName) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM Tags WHERE name = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String query = QueryUtil.getQuery("existsTag");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, tagName);
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
@@ -67,16 +67,16 @@ public class TagDao extends Dao {
         if (existsTag(addTag)) {
             return false;
         }
-        String sql = "INSERT INTO Tags (name) VALUES (?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String query = QueryUtil.getQuery("createTag");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, addTag);
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public Tag getTagById(int tagId) throws SQLException {
-        String sql = "SELECT * FROM Tags WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String query = QueryUtil.getQuery("getTagById");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, tagId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -88,20 +88,34 @@ public class TagDao extends Dao {
     }
 
     public boolean deleteTag(int tagId) throws SQLException {
-        String sql = "DELETE FROM Tags WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String query = QueryUtil.getQuery("deleteTag");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, tagId);
             return pstmt.executeUpdate() > 0;
         }
     }
 
     public boolean updateTag(Tag tag) throws SQLException {
-        String sql = "UPDATE Tags SET name = ? WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        String query = QueryUtil.getQuery("updateTag");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, tag.getTagName());
             pstmt.setInt(2, tag.getTagId());
             return pstmt.executeUpdate() > 0;
         }
+    }
+
+    public boolean deleteTagtodo(int tagId) {
+        String query = QueryUtil.getQuery("deleteTagtodoByTag");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, tagId);
+            int affectedRows = pstmt.executeUpdate(); // 삭제된 행의 수를 반환
+            // 삭제 성공시 affectedRows > 0, 존재하지 않는 경우 0 반환
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 }
 

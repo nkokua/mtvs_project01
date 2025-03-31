@@ -41,6 +41,7 @@ public class TodolistView {
 
 
             int choice = scanner.nextInt();
+            scanner.nextLine(); // 개행 문자 처리
             switch(choice){
                 case 1:
                     createTodo();
@@ -142,7 +143,7 @@ public class TodolistView {
             } else {
                 System.out.println("\n📌 Todolist 목록:");
                 for (TagTodo tagtodo : tagtodos) {
-                    System.out.println(tagtodo);
+                    System.out.println(tagtodo.toString());
                 }
             }
         }catch (SQLException e){
@@ -156,7 +157,7 @@ public class TodolistView {
         scanner.nextLine(); // 개행 문자 처리
 
         try {
-            boolean success = todolistService.checkCompletionTodo(todoId);
+            boolean success = todolistService.updateCompletionTodo(todoId);
             if (success) {
                 System.out.println("todolist 체크 완료!");
             } else {
@@ -164,6 +165,8 @@ public class TodolistView {
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

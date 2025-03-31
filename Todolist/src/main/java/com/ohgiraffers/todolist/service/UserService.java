@@ -4,6 +4,10 @@ import com.ohgiraffers.todolist.dao.UserDao;
 import com.ohgiraffers.todolist.model.User;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+import static com.ohgiraffers.todolist.Application.log;
 
 public class UserService {
     private final Connection connection;
@@ -29,18 +33,29 @@ public class UserService {
     }
 
     public boolean loginUser(User user) {
-        if (user == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
+        if (user == null || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             System.out.println("입력값이 비어있습니다!");
             return false;
         }
-        // 이메일 존재여부 확인후 비밀번호 존재여부 확인.
-        if(user.getEmail().equals(userDao.getUser().getEmail())){
-            if(userDao.getUser().getPassword().equals(user.getPassword())){
+        // 이메일 존재여부 확인후 비밀번호 일치여부 확인.
+        if(userDao.existsUser(user.getEmail())) {
+            if(userDao.getUser(user.getEmail()).getPassword().equals(user.getPassword())){
+                System.out.println("환영합니다.");
                 return true;
             }
         };
+        System.out.println("로그인 실패입니다.");
         return false;
     }
+
+    public List<User> getAllUser() throws SQLException {
+        List<User> users = userDao.getAllUser();
+        if(users==null){
+            log.error("조회목록이 없거나 오류발생");
+            return null;
+        }
+        return users;
+    };
 
 }
 

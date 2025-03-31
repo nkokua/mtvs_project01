@@ -41,8 +41,13 @@ public class TagService {
         if (tagDao.getTagById(tagId) == null) {
             throw new IllegalArgumentException("삭제할 태그를 찾을 수 없습니다.");
         }
-        return tagDao.deleteTag(tagId);
-
+        boolean result =tagDao.deleteTag(tagId);
+        //실패시 실패반환
+        if (!result) {
+            return result;
+        }
+        //성공시 마지막으로 tagtodo목록 싹~ 삭제 그리고 그결과 반환.
+        return tagDao.deleteTagtodo(tagId);
     }
 
     public boolean updateTag(Tag tag) throws SQLException {

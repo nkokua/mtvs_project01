@@ -7,17 +7,17 @@ public class TagTodo {
     private int todoId;
     private String todo;
     private String tagName;
-    private int memberId;
+    private int userId;
     private Date creationDate;
     private Date completionDate;
     private char isCompleted;
 
-    public TagTodo(int tagId, int todoId, String todo, String tagName, int memberId, Date creationDate, Date completionDate, char isCompleted) {
+    public TagTodo(int tagId, int todoId, String todo, String tagName, int userId, Date creationDate, Date completionDate, char isCompleted) {
         this.tagId = tagId;
         this.todoId = todoId;
         this.todo = todo;
         this.tagName = tagName;
-        this.memberId = memberId;
+        this.userId = userId;
         this.creationDate = creationDate;
         this.completionDate = completionDate;
         this.isCompleted = isCompleted;
@@ -34,6 +34,20 @@ public class TagTodo {
     public TagTodo(String todo, String tagName) {
         this.todo = todo;
         this.tagName = tagName;
+    }
+
+    @Override
+    public String toString() {
+        return "TagTodo{" +
+                "tagId=" + tagId +
+                ", todoId=" + todoId +
+                ", todo='" + todo + '\'' +
+                ", tagName='" + tagName + '\'' +
+                ", userId=" + userId +
+                ", creationDate=" + creationDate +
+                ", completionDate=" + completionDate +
+                ", isCompleted=" + isCompleted +
+                '}';
     }
 
     public TagTodo(int tagId, String tagName) {
@@ -83,12 +97,12 @@ public class TagTodo {
         this.tagName = tagName;
     }
 
-    public int getMemberId() {
-        return memberId;
+    public int getuserId() {
+        return userId;
     }
 
-    public void setMemberId(int memberId) {
-        this.memberId = memberId;
+    public void setuserId(int userId) {
+        this.userId = userId;
     }
 
     public Date getCreationDate() {

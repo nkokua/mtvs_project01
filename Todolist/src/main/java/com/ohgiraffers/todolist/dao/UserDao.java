@@ -1,6 +1,5 @@
 package com.ohgiraffers.todolist.dao;
 
-import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.model.User;
 import com.ohgiraffers.todolist.util.QueryUtil;
 
@@ -16,7 +15,6 @@ public class UserDao extends Dao {
 
     public boolean addUser(User user,String xmlqry) {
         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
-
         try (PreparedStatement ptmt = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
             ptmt.setString(1,user.getEmail());
             ptmt.setString(2,user.getNickname());
@@ -48,13 +46,34 @@ public class UserDao extends Dao {
         return false;
     }
 
-    public User getUser() {
-        User user = null;
-        String query = QueryUtil.getQuery("getUser"); // XML에서 쿼리 로드
+    public List<User> getAllUser() {
+        List<User> users = new ArrayList<>();
+        String query = QueryUtil.getQuery("getAllUser"); // XML에서 쿼리 로드
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             try(ResultSet rs = ptmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(new User(
+                            rs.getString("nickname"),
+                            rs.getString("email"),
+                            rs.getInt("userId")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public User getUser(String email) {
+        User user = null;
+        String query = QueryUtil.getQuery("getUserByEmail");
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setString(1,email);
+            try(ResultSet rs = ptmt.executeQuery()) {
                 if (rs.next()) {
-                    user = new User(
+                    user= new User(
                             rs.getString("email"),
                             rs.getString("password")
                     );
@@ -66,8 +85,6 @@ public class UserDao extends Dao {
         }
         return user;
     }
-
-
 
 
     public boolean deleteUser(User user,String xmlqry) {
@@ -87,5 +104,6 @@ public class UserDao extends Dao {
 
         return false;
     }
+
 
 }

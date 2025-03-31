@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <queries>
-<!--JOIN 쿼리-->
 
-<!--특정태그를 가진 투두리스트를 조회하는-->
+<!--JOIN 쿼리-->
+    <!--특정태그를 가진 투두리스트를 조회하는-->
     <query id="getTodoByTagId">
         SELECT
         tl.todo_id AS "TodoID",
@@ -16,8 +16,19 @@
         INNER JOIN tag t ON t.tag_id = tt.tag_id
         WHERE t.tag_id = ?;
     </query>
-
-
+    <query id="getAllTodolist">
+        SELECT
+        tl.todo_id AS "TodoID",
+        tl.todo AS "Todo",
+        t.tag_id AS "TagId",
+        t.tag_name AS "태그명",
+        tl.creation_date AS "생성일",
+        tl.completion_date "완료일",
+        tl.iscompleted AS "완료 여부"
+        FROM todolist tl
+        INNER JOIN tag_todo tt ON tt.todo_id = tl.todo_id
+        INNER JOIN tag t ON t.tag_id = tt.tag_id
+    </query>
 <!--여기까지 JOIN쿼리-->
 
 
@@ -36,16 +47,27 @@
     </query>
     <query id="deleteTag">
         DELETE FROM tag
-        WHERE tag_id = ?;
+        WHERE tag_id = ?
     </query>
     <!--태그전체조회 -->
     <query id="getAllTag">
         SELECT *
         FROM tag
     </query>
-    <query id="give">
+    <query id="getTagById">
+        SELECT *
+        FROM tag
+        WHERE tag_id = ?
     </query>
-
+    <query id="existsTag">
+        SELECT COUNT(*)
+        FROM tag
+        WHERE tag_name = ?
+    </query>
+    <query id="deleteTagtodoByTag">
+        DELETE FROM tag_todo
+        WHERE tag_id = ?
+    </query>
 <!--    여기까지 태그쿼리-->
 
 <!--    여기서부터 TagTodo DAO관리-->
@@ -59,6 +81,11 @@
         SELECT *
         FROM tag_todo
     </query>
+    <query id="getExistsTagTodo">
+        SELECT *
+        FROM tag_todo
+        WHERE tag_Id = ? AND todo_id = ?
+    </query>
 
 <!--    여기까지 TagTodo-->
 
@@ -68,8 +95,55 @@
         INSERT INTO user (email,nickname,password)
         VALUES(?,?,?)
     </query>
-    <query>
-
+    <query id="getExists">
+        SELECT u.user_id
+        FROM user u
+        WHERE email = ?
     </query>
+    <query id="getAllUser">
+        SELECT u.nickname AS "nickname", u.email AS "email", u.user_id AS "userId"
+        FROM user u
+    </query>
+    <!--    비밀번호 비교를 위한 쿼리-->
+    <query id="getUserByEmail">
+        SELECT u.email AS "email" , u.password AS "password"
+        FROM user u
+        WHERE u.email = ?
+    </query>
+<!--    여기까지 유저쿼리-->
+
+<!--    여기서부터 Todolist-->
+    <query id="addTodo">
+        INSERT INTO todolist (todo,user_id,creation_date,iscompleted)
+        VALUES(?,?,?,?)
+    </query>
+    <query id="getTodoById">
+        SELECT todo AS "Todo", iscompleted AS "완료 여부"
+        FROM todolist
+    </query>
+    <query id="deleteTodo">
+        DELETE FROM todolist
+        WHERE todo_id = ?
+    </query>
+    <query id="updateTodo">
+        UPDATE todolist SET todo = ?
+        WHERE todo_id = ?
+    </query>
+    <query id="updateCompletionTodo">
+        UPDATE todolist SET iscompleted = ?
+        WHERE todo_id = ?
+    </query>
+    <query id="updateCompletionDate">
+        UPDATE todolist SET completion_date =DATE('now')
+    </query>
+    <query id="nullCompletionDate">
+        UPDATE FROM todolist SET completion_date = NULL
+        WHERE todo_id = ?
+    </query>
+    <query id="deleteTagtodoByTodo">
+        DELETE FROM tag_todo
+        WHERE todo_id = ?
+    </query>
+<!--    여기까지 Todolist-->
 
 </queries>

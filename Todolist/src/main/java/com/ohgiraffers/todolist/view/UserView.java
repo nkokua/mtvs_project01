@@ -5,6 +5,9 @@ import com.ohgiraffers.todolist.service.UserService;
 
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLOutput;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
@@ -60,11 +63,27 @@ public class UserView {
                 user= new User(email,password);
                 return userService.loginUser(user);
             }else if(inputValue.equals("n")){
+                System.out.println("로그인 실패");
                 return false;
             }else {
                 System.out.println("제대로된 값을 입력해주세요.");
             }
 
+        }
+    }
+
+    public void getAllUser() {
+        try{
+            List<User> users = userService.getAllUser();
+            if (users.isEmpty()) {
+                System.out.println("등록된 사용자가 없습니다.");
+            } else {
+                System.out.println("\n===== 전체 사용자 목록 =====");
+                System.out.println("닉네임 \t"+"이메일");
+                users.forEach(user -> System.out.println(user.getNickname()+" "+user.getEmail()+"\n"));
+            }
+        } catch (SQLException e) {
+            System.out.println("사용자 목록조회 중 오류 발생.");
         }
     }
 }

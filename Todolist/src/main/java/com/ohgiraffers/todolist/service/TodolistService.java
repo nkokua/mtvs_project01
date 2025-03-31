@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TodolistService {
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private TodolistDao todoDao;
     private TagDao tagDao;
     private final Connection connection;
@@ -33,9 +32,9 @@ public class TodolistService {
     }
 
     public List<TagTodo> getAllTodolist() throws SQLException{
-        List<TagTodo> tagtodos = todoDao.getAllTodolist("getAllData");
+        List<TagTodo> tagtodos = todoDao.getAllTodolist("getAllTodolist");
         if(tagtodos==null){
-            log.error("조회목록이 없거나 오류발생");
+            System.out.println("조회목록이 없거나 오류발생");
             return null;
         }
         return tagtodos;
@@ -46,7 +45,14 @@ public class TodolistService {
         if (todo == null) {
             throw new IllegalArgumentException("삭제할 todo를 찾을 수 없습니다.");
         }
-        return todoDao.deleteTodo(todoId);
+        boolean result =todoDao.deleteTodo(todoId);
+        //실패시 실패반환
+        if (!result) {
+            return result;
+        }
+        //성공시 마지막으로 tagtodo목록 싹~ 삭제 그리고 그결과 반환.
+        return todoDao.deleteTagtodo(todoId);
+
     }
 
     public boolean updateTodo(Todolist todolist) throws SQLException {
@@ -75,14 +81,23 @@ public class TodolistService {
             if (!result) {
                 throw new SQLException("Y-N 과정에서 오류가 발생되었습니다.");
             }
+            result = todoDao.deleteCompletionDate(todoId);
+            if (!result) {
+                throw new SQLException("CompletionDate 초기화 과정에서 오류발생하였습니다.");
+            }
         }else if(todo.getIsCompleted() == 'N'){
             result = todoDao.updateCompletionTodo(todoId,'Y');
             if (!result) {
                 throw new SQLException("N-Y 과정에서 오류가 발생되었습니다.");
             }
+            result = todoDao.updateCompletionDate(todoId);
+            if (!result) {
+                throw new SQLException("completionDate 갱신 과정에서 오류가 발생되었습니다.");
+            }
         }
         return result;
     }
+
 
 
 }

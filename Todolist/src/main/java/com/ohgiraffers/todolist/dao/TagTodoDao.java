@@ -43,13 +43,13 @@ public class TagTodoDao extends Dao{
     }
 
     public boolean existsTagTodo(int tagId,int todoId){
-        String query = QueryUtil.getQuery("getExists");
+        String query = QueryUtil.getQuery("getExistsTagTodo");
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1,tagId);
             pstmt.setInt(2,todoId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(2) > 0; // todoId 존재하면 반환
+                    return rs.getInt(1) > 0; // todoId 존재하면 반환
                 }
             }
         } catch (SQLException e) {

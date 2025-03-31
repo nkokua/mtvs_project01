@@ -56,13 +56,24 @@ public Todolist getTodoById(int todoId) throws SQLException {
             return pstmt.executeUpdate() > 0; // 삭제된 행이 있으면 true 반환
         }
     }
-
+    public boolean deleteTagtodo(int todoId) {
+        String query = QueryUtil.getQuery("deleteTagtodoByTodo");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, todoId);
+            int affectedRows = pstmt.executeUpdate(); // 삭제된 행의 수를 반환
+            // 삭제 성공시 affectedRows > 0, 존재하지 않는 경우 0 반환
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 //투두리스트 업데이트 todo내용을.
     public boolean updateTodo(Todolist todo) {
         String query = QueryUtil.getQuery("updateTodo"); // XML에서 쿼리 로드
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            ptmt.setInt(1,todo.getTodo_id());
-            ptmt.setString(2,todo.getTodo());
+            ptmt.setString(1,todo.getTodo());
+            ptmt.setInt(2,todo.getTodo_id());
             int affectedRows = ptmt.executeUpdate();
             return affectedRows > 0;
 
@@ -71,12 +82,34 @@ public Todolist getTodoById(int todoId) throws SQLException {
         }
         return false;
     }
-
+// Y->N (완료일 해제) N->Y (완료일 생성)
     public boolean updateCompletionTodo(int todoId, char isCompleted) {
         String query = QueryUtil.getQuery("updateCompletionTodo"); // XML에서 쿼리 로드
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setString(1, String.valueOf(isCompleted));
+            ptmt.setInt(2,todoId);
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateCompletionDate(int todoId){
+        String query = QueryUtil.getQuery("updateCompletionDate"); // XML에서 쿼리 로드
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ptmt.setInt(1,todoId);
-            ptmt.setString(2, String.valueOf(isCompleted));
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean deleteCompletionDate(int todoId){
+        String query = QueryUtil.getQuery("deleteCompletionDate");
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            ptmt.setInt(1,todoId);
             int affectedRows = ptmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
