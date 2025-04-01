@@ -36,17 +36,26 @@ public class TagTodo {
         this.tagName = tagName;
     }
 
+    public TagTodo(int tagId, int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
+        this.tagId = tagId;
+        this.todoId = todoID;
+        this.todo = todo;
+        this.tagName = tagName;
+        this.creationDate = creationDate;
+        this.completionDate = completionDate;
+        this.isCompleted = isCompleted;
+    }
+
     @Override
     public String toString() {
         return "TagTodo{" +
-                "tagId=" + tagId +
-                ", todoId=" + todoId +
+                "todoId=" + todoId +
                 ", todo='" + todo + '\'' +
-                ", tagName='" + tagName + '\'' +
-                ", userId=" + userId +
-                ", creationDate=" + creationDate +
-                ", completionDate=" + completionDate +
-                ", isCompleted=" + isCompleted +
+                ", 태그Id=" + tagId +
+                ", 태그이름='" + tagName + '\'' +
+                ", 생성일=" + creationDate +
+                ", 완료일=" + completionDate +
+                ", 완료여부=" + isCompleted +
                 '}';
     }
 

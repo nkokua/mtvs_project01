@@ -99,7 +99,7 @@ public class TodolistView {
 
         System.out.print("새로운 Todo: ");
         String todo = scanner.nextLine();
-        Todolist todolist = new Todolist(todo);
+        Todolist todolist = new Todolist(todo,todoId);
 
         try {
             boolean success = todolistService.updateTodo(todolist);

@@ -18,9 +18,8 @@ public class TodolistDao extends Dao{
 
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ptmt.setString(1,todo.getTodo());
-            ptmt.setInt(2,todo.getMemberId());
-            ptmt.setDate(3,todo.getCreationDate());
-            ptmt.setString(4,"N");
+            ptmt.setInt(2,todo.getuserId());
+            ptmt.setString(3,"N");
             int affectedRows = ptmt.executeUpdate();
             return affectedRows > 0;
 
@@ -54,8 +53,13 @@ public Todolist getTodoById(int todoId) throws SQLException {
         try (PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, todoId);
             return pstmt.executeUpdate() > 0; // 삭제된 행이 있으면 true 반환
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return false;
     }
+
+
     public boolean deleteTagtodo(int todoId) {
         String query = QueryUtil.getQuery("deleteTagtodoByTodo");
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -68,6 +72,8 @@ public Todolist getTodoById(int todoId) throws SQLException {
         }
         return false;
     }
+
+
 //투두리스트 업데이트 todo내용을.
     public boolean updateTodo(Todolist todo) {
         String query = QueryUtil.getQuery("updateTodo"); // XML에서 쿼리 로드
@@ -107,7 +113,7 @@ public Todolist getTodoById(int todoId) throws SQLException {
         return false;
     }
     public boolean deleteCompletionDate(int todoId){
-        String query = QueryUtil.getQuery("deleteCompletionDate");
+        String query = QueryUtil.getQuery("nullCompletionDate");
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ptmt.setInt(1,todoId);
             int affectedRows = ptmt.executeUpdate();
@@ -124,13 +130,14 @@ public Todolist getTodoById(int todoId) throws SQLException {
         try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             try(ResultSet rs = ptmt.executeQuery()) {
                     while (rs.next()) {
-//                        todo_id AS "TodoID",
+//                                      todo_id AS "TodoID",
 //                                tl.todo AS "Todo",
 //                                t.tag_name AS "태그명",
 //                                tl.creation_date AS "생성일",
 //                                tl.completion_date "완료일",
 //                                tl.iscompleted AS "완료 여부"
                                 tagTodos.add(new TagTodo(
+                                        rs.getInt("TagId"),
                                 rs.getInt("TodoID"),
                                 rs.getString("Todo"),
                                 rs.getString("태그명"),
@@ -146,5 +153,7 @@ public Todolist getTodoById(int todoId) throws SQLException {
         }
         return tagTodos;
     }
+
+
 
 }

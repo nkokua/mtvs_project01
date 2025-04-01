@@ -13,28 +13,68 @@ public class TagDao extends Dao {
     public TagDao(Connection connection) {
         super(connection);
     }
-// 태그부여
+
     public List<TagTodo> getTodoByTagId(int tagId, String xmlQry) throws SQLException {
-        List<TagTodo> tagtodo = new ArrayList<>();
+        List<TagTodo> tagTodos = new ArrayList<>();
         String query = QueryUtil.getQuery(xmlQry); // XML에서 쿼리로
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-
+            pstmt.setInt(1, tagId);
             try (ResultSet rs = pstmt.executeQuery()) {
-
-                pstmt.setInt(1, tagId);
                 while (rs.next()) {
-                    new TagTodo(
-                          rs.getString("Todo"),
-//                        라벨명 Todo -> todo(할일)
-                            rs.getString("태그명"));
-//                        라벨명 태그명 -> tag_name(태그이름)
+//                                      todo_id AS "TodoID",
+//                                tl.todo AS "Todo",
+//                                t.tag_name AS "태그명",
+//                                tl.creation_date AS "생성일",
+//                                tl.completion_date "완료일",
+//                                tl.iscompleted AS "완료 여부"
+                    tagTodos.add(new TagTodo(
+                            rs.getInt("TagId"),
+                            rs.getInt("TodoID"),
+                            rs.getString("Todo"),
+                            rs.getString("태그명"),
+                            rs.getDate("생성일"),
+                            rs.getDate("완료일"),
+                            rs.getString("완료 여부").charAt(0)
+                    ));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return tagtodo;
+            return tagTodos;
         }
     }
+
+
+    /*
+    *         String query = QueryUtil.getQuery(xmlqry); // XML에서 쿼리 로드
+        List<TagTodo> tagTodos = new ArrayList<>();
+        try (PreparedStatement ptmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            try(ResultSet rs = ptmt.executeQuery()) {
+                    while (rs.next()) {
+//                                      todo_id AS "TodoID",
+//                                tl.todo AS "Todo",
+//                                t.tag_name AS "태그명",
+//                                tl.creation_date AS "생성일",
+//                                tl.completion_date "완료일",
+//                                tl.iscompleted AS "완료 여부"
+                                tagTodos.add(new TagTodo(
+                                        rs.getInt("TagId"),
+                                rs.getInt("TodoID"),
+                                rs.getString("Todo"),
+                                rs.getString("태그명"),
+                                rs.getDate("생성일"),
+                                rs.getDate("완료일"),
+                                rs.getString("완료 여부").charAt(0)
+                                ));
+                    }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tagTodos;
+    *
+    * */
 // 모든 태그목록 조회
     public List<Tag> getAllTag(String xmlQry) {
         List<Tag> tag = new ArrayList<>();
@@ -117,6 +157,8 @@ public class TagDao extends Dao {
         return false;
 
     }
+
+
 }
 
 

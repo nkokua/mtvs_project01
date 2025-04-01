@@ -31,13 +31,13 @@ public class UserDao extends Dao {
 
 
 
-    public boolean existsUser(String email) {
+    public boolean existsUserByEmail(String email) {
         String query = QueryUtil.getQuery("getExists");
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1,email);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // todoId 존재하면 반환
+                    return rs.getInt(1) > 0; // user 존재하면 반환
                 }
             }
         } catch (SQLException e) {

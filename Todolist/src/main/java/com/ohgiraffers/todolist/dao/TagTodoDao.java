@@ -17,6 +17,8 @@ public class TagTodoDao extends Dao{
         ){
             ptmt.setInt(1,tag_id);
             ptmt.setInt(2,todo_id);
+            int affectedRows = ptmt.executeUpdate();
+            return affectedRows > 0;
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -47,6 +49,36 @@ public class TagTodoDao extends Dao{
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1,tagId);
             pstmt.setInt(2,todoId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // todoId 존재하면 반환
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existsTagTodoByTagId(int tagId){
+        String query = QueryUtil.getQuery("getExistsTagTodoByTagId");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1,tagId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // todoId 존재하면 반환
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existsTagTodoByTodoId(int todoId) {
+        String query = QueryUtil.getQuery("getExistsTagTodoByTagId");
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1,todoId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1) > 0; // todoId 존재하면 반환

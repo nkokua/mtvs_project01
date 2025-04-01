@@ -7,6 +7,7 @@
         SELECT
         tl.todo_id AS "TodoID",
         tl.todo AS "Todo",
+        t.tag_id AS "TagId",
         t.tag_name AS "태그명",
         tl.creation_date AS "생성일",
         tl.completion_date "완료일",
@@ -14,7 +15,7 @@
         FROM todolist tl
         INNER JOIN tag_todo tt ON tt.todo_id = tl.todo_id
         INNER JOIN tag t ON t.tag_id = tt.tag_id
-        WHERE t.tag_id = ?;
+        WHERE t.tag_id = ?
     </query>
     <query id="getAllTodolist">
         SELECT
@@ -26,8 +27,8 @@
         tl.completion_date "완료일",
         tl.iscompleted AS "완료 여부"
         FROM todolist tl
-        INNER JOIN tag_todo tt ON tt.todo_id = tl.todo_id
-        INNER JOIN tag t ON t.tag_id = tt.tag_id
+        LEFT JOIN tag_todo tt ON tt.todo_id = tl.todo_id
+        LEFT JOIN tag t ON t.tag_id = tt.tag_id
     </query>
 <!--여기까지 JOIN쿼리-->
 
@@ -55,8 +56,8 @@
         FROM tag
     </query>
     <query id="getTagById">
-        SELECT *
-        FROM tag
+        SELECT t.tag_id AS "id" , t.tag_name AS "name"
+        FROM tag t
         WHERE tag_id = ?
     </query>
     <query id="existsTag">
@@ -86,7 +87,16 @@
         FROM tag_todo
         WHERE tag_Id = ? AND todo_id = ?
     </query>
-
+    <query id="getExistsTagTodoByTagId">
+        SELECT *
+        FROM tag_todo
+        WHERE tag_Id = ?
+    </query>
+    <query id="getExistsTagTodoByTodoId">
+        SELECT *
+        FROM tag_todo
+        WHERE todo_Id = ?
+    </query>
 <!--    여기까지 TagTodo-->
 
 
@@ -115,11 +125,12 @@
 <!--    여기서부터 Todolist-->
     <query id="addTodo">
         INSERT INTO todolist (todo,user_id,creation_date,iscompleted)
-        VALUES(?,?,?,?)
+        VALUES(?,?,NOW(),?)
     </query>
     <query id="getTodoById">
         SELECT todo AS "Todo", iscompleted AS "완료 여부"
         FROM todolist
+        WHERE todo_id = ?
     </query>
     <query id="deleteTodo">
         DELETE FROM todolist
@@ -134,10 +145,11 @@
         WHERE todo_id = ?
     </query>
     <query id="updateCompletionDate">
-        UPDATE todolist SET completion_date =DATE('now')
+        UPDATE todolist SET completion_date =CURRENT_DATE
+        WHERE todo_id = ?
     </query>
     <query id="nullCompletionDate">
-        UPDATE FROM todolist SET completion_date = NULL
+        UPDATE todolist SET completion_date = NULL
         WHERE todo_id = ?
     </query>
     <query id="deleteTagtodoByTodo">

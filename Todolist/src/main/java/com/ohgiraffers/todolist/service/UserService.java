@@ -26,8 +26,8 @@ public class UserService {
             System.out.println("입력값이 비어있습니다!");
             return false;
         }
-        if (userDao.existsUser(user.getEmail())) {
-            throw new IllegalArgumentException("이미 존재하는 태그입니다.");
+        if (userDao.existsUserByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 유저입니다.");
         }
         return userDao.addUser(user,"addUser");
     }
@@ -38,7 +38,7 @@ public class UserService {
             return false;
         }
         // 이메일 존재여부 확인후 비밀번호 일치여부 확인.
-        if(userDao.existsUser(user.getEmail())) {
+        if(userDao.existsUserByEmail(user.getEmail())) {
             if(userDao.getUser(user.getEmail()).getPassword().equals(user.getPassword())){
                 System.out.println("환영합니다.");
                 return true;

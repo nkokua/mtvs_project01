@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class TodolistService {
+    private TagTodoDao tagTodoDao;
     private TodolistDao todoDao;
     private TagDao tagDao;
     private final Connection connection;
@@ -23,6 +24,7 @@ public class TodolistService {
         this.connection = con;
         this.todoDao = new TodolistDao(con);
         this.tagDao = new TagDao(con);
+        this.tagTodoDao = new TagTodoDao(con);
     }
     public boolean addTodo(Todolist todo) throws SQLException{
         if (todo == null || todo.getTodo().isEmpty() ) {
@@ -41,17 +43,16 @@ public class TodolistService {
     };
 
     public boolean deleteTodo(int todoId) throws SQLException{
+
         Todolist todo = todoDao.getTodoById(todoId);
         if (todo == null) {
             throw new IllegalArgumentException("삭제할 todo를 찾을 수 없습니다.");
         }
-        boolean result =todoDao.deleteTodo(todoId);
-        //실패시 실패반환
-        if (!result) {
-            return result;
+        if(tagTodoDao.existsTagTodoByTodoId(todoId)){
+            todoDao.deleteTagtodo(todoId);
+            //실패시 실패반환
         }
-        //성공시 마지막으로 tagtodo목록 싹~ 삭제 그리고 그결과 반환.
-        return todoDao.deleteTagtodo(todoId);
+        return todoDao.deleteTodo(todoId);
 
     }
 

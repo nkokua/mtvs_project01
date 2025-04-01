@@ -12,11 +12,14 @@ import java.util.List;
 
 public class TagService {
     private TagDao tagDao;
+    private TagTodoDao tagTodoDao;
     private final Connection con;
 
     public TagService(Connection con) {
         this.con = con;
         this.tagDao = new TagDao(con);
+        this.tagTodoDao = new TagTodoDao(con);
+
     }
 
     public List<Tag> getAllTag() throws SQLException {
@@ -38,21 +41,27 @@ public class TagService {
     }
 
     public boolean deleteTag(int tagId) throws SQLException {
+        con.setAutoCommit(false);
+
         if (tagDao.getTagById(tagId) == null) {
             throw new IllegalArgumentException("삭제할 태그를 찾을 수 없습니다.");
         }
-        boolean result =tagDao.deleteTag(tagId);
+        if(tagTodoDao.existsTagTodoByTagId(tagId)){
+            tagDao.deleteTagtodo(tagId);
         //실패시 실패반환
-        if (!result) {
-            return result;
         }
-        //성공시 마지막으로 tagtodo목록 싹~ 삭제 그리고 그결과 반환.
-        return tagDao.deleteTagtodo(tagId);
+        boolean result = tagDao.deleteTag(tagId);
+        if (result) {
+            con.commit();
+        }else{
+            con.rollback();
+        }
+        return result;
     }
 
     public boolean updateTag(Tag tag) throws SQLException {
         if (tagDao.getTagById(tag.getTagId()) == null) {
-            throw new IllegalArgumentException("삭제할 태그를 찾을 수 없습니다.");
+            throw new IllegalArgumentException("업데이트할 태그를 찾을 수 없습니다.");
         }
         return tagDao.updateTag(tag);
     }

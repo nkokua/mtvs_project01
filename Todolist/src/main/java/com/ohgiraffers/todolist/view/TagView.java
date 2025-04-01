@@ -75,12 +75,12 @@ public class TagView {
         try {
             boolean success = tagTodoService.createTagTodo(tagId,todoId);
             if (success) {
-                System.out.println("사용자가 성공적으로 등록되었습니다.");
+                System.out.println("태그가 성공적으로 부여되었습니다.");
             } else {
-                System.out.println("사용자 등록에 실패하였습니다.");
+                System.out.println("태그 부여에 실패하였습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("사용자 등록 중 오류가 발생했습니다.");
+            System.out.println("태그 부여 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -93,12 +93,12 @@ public class TagView {
         try {
             boolean success = tagService.createTag(tag);
             if (success) {
-                System.out.println("사용자가 성공적으로 등록되었습니다.");
+                System.out.println("태그가 성공적으로 등록되었습니다.");
             } else {
-                System.out.println("사용자 등록에 실패하였습니다.");
+                System.out.println("태그 등록에 실패하였습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("사용자 등록 중 오류가 발생했습니다.");
+            System.out.println("태그 등록 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -108,19 +108,20 @@ public class TagView {
     private void updateTag() {
         System.out.print("수정할 태그 id: ");
         int tagId = scanner.nextInt();
-
+        scanner.nextLine();
         System.out.print("태그이름: ");
         String tagName = scanner.nextLine();
+
         Tag tag = new Tag(tagId,tagName);
         try {
             boolean success = tagService.updateTag(tag);
             if (success) {
-                System.out.println("사용자가 성공적으로 등록되었습니다.");
+                System.out.println("태그가 성공적으로 수정되었습니다.");
             } else {
-                System.out.println("사용자 등록에 실패하였습니다.");
+                System.out.println("태그 업데이트에 실패하였습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("사용자 등록 중 오류가 발생했습니다.");
+            System.out.println("태그 등록 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -129,15 +130,16 @@ public class TagView {
         System.out.print("삭제할 태그 ID를 입력하세요: ");
         int tagId = scanner.nextInt();
         scanner.nextLine(); // 개행 문자 처리
+        
         try {
             boolean success = tagService.deleteTag(tagId);
             if (success) {
-                System.out.println("사용자가 성공적으로 삭제되었습니다.");
+                System.out.println("태그가 성공적으로 삭제되었습니다.");
             } else {
-                System.out.println("사용자 삭제에 실패하였습니다.");
+                System.out.println("태그 삭제에 실패하였습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("사용자 삭제 중 오류가 발생했습니다.");
+            System.out.println("태그 삭제 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -150,7 +152,7 @@ public class TagView {
             } else {
                 System.out.println("\n📌 태그 목록:");
                 for (Tag tag : tags) {
-                    System.out.println(tags);
+                    System.out.println(tag);
                 }
             }
         }catch (SQLException e){

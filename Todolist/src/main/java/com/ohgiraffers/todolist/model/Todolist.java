@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Todolist {
     private int todo_id;
     private String todo;
-    private int memberId;
+    private int userId;
     private Date creationDate;
     private Date completionDate;
     private char isCompleted;
@@ -19,6 +19,11 @@ public class Todolist {
         this.isCompleted = isCompleted;
     }
 
+    public Todolist(String todo, int todoId) {
+        this.todo = todo;
+        this.todo_id = todoId;
+    }
+
 
     public int getTodo_id() {
         return todo_id;
@@ -29,7 +34,7 @@ public class Todolist {
         return "Todolist{" +
                 "todo_id=" + todo_id +
                 ", todo='" + todo + '\'' +
-                ", memberId=" + memberId +
+                ", userId=" + userId +
                 ", creationDate=" + creationDate +
                 ", completionDate=" + completionDate +
                 ", isCompleted=" + isCompleted +
@@ -48,12 +53,12 @@ public class Todolist {
         this.todo = todo;
     }
 
-    public int getMemberId() {
-        return memberId;
+    public int getuserId() {
+        return userId;
     }
 
-    public void setMemberId(int memberId) {
-        this.memberId = memberId;
+    public void setuserId(int userId) {
+        this.userId = userId;
     }
 
     public Date getCreationDate() {
