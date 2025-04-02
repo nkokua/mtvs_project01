@@ -48,7 +48,7 @@ public class TagService {
             throw new IllegalArgumentException("이미 존재하는 태그입니다.");
         }
         // 중복이 아니면 추가 로직 수행 (예: DB에 삽입)
-        return tagDao.createTag(tag, "addTag");
+        return tagDao.createTag(tag);
 
     }
 

@@ -103,13 +103,13 @@ public class TagDao extends Dao {
         }
     }
 
-    public boolean createTag(Tag tag, String addTag) throws SQLException {
-        if (existsTag(addTag)) {
+    public boolean createTag(Tag tag) throws SQLException {
+        if (existsTag(tag.getTagName())) {
             return false;
         }
         String query = QueryUtil.getQuery("createTag");
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, addTag);
+            pstmt.setString(1, tag.getTagName());
             return pstmt.executeUpdate() > 0;
         }
     }

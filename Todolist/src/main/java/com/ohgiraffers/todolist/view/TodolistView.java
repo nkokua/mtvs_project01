@@ -155,21 +155,22 @@ public class TodolistView {
                 System.out.println("📌 조회된 Todolist가 없습니다..");
             } else {
                 System.out.println("\n📌 Todolist 목록:");
+//                사이즈 하나일경우
                 if(tagtodos.size()==1){
                     System.out.println(tagtodos.get(0).toString());
                 }
                 for (int i = 1; i<tagtodos.size(); i++ ) {
                     if(prevId != tagtodos.get(i).getTodoId()){
-                        // 이전꺼랑 다르면 이전꺼출력
+                        //현재꺼 이전꺼랑 다르면 이전꺼출력
                         System.out.println(tagtodos.get(i-1).toString());
 //                        마지막 회차처리
                         if(i==tagtodos.size()-1){
                             System.out.println(tagtodos.get(i).toString());
                         }
                     }else{
-                        // 이전꺼랑 todo id같으면 현재꺼 태그 이름, 아이디 리스트에 추가!
-                        tagtodos.get(i).addTagIds(tagtodos.get(i).getTagId());
-                        tagtodos.get(i).addTagNames(tagtodos.get(i).getTagName());
+                        // 이전꺼랑 현재 todo id같으면 **이전꺼 태그 이름, 아이디 ***현재 인덱스 리스트에 추가!
+                        tagtodos.get(i).addTagIds(tagtodos.get(i-1).getTagId());
+                        tagtodos.get(i).addTagNames(tagtodos.get(i-1).getTagName());
 //                       * 마지막회차 에서 이전꺼랑 태그id가같으면 마지막께 합쳐지므로 그러기전에 출력.
                         if(i==tagtodos.size()-1){
                             System.out.println(tagtodos.get(i).toString());
