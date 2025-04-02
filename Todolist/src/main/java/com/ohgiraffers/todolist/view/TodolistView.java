@@ -155,26 +155,27 @@ public class TodolistView {
                 System.out.println("📌 조회된 Todolist가 없습니다..");
             } else {
                 System.out.println("\n📌 Todolist 목록:");
-
+                if(tagtodos.size()==1){
+                    System.out.println(tagtodos.get(0).toString());
+                }
                 for (int i = 1; i<tagtodos.size(); i++ ) {
-                    nextId
-                    /*
-                    * 첫단계에서출력x
-                    * -----
-                    * 이전꺼와 todonid값과 태그ID값 각각비교
-                    * todoID같으면 태그ID,태그이름 합치기 아니면 출력
-                    * 1                 2       3
-                    * 첫번째꺼,다음꺼
-                    * */
-                    if(prevId != tagtodos.get(i).getTagId()){
-                        // 이전꺼랑 다르면 출력
-                        System.out.println(tagtodos.get(i).toString());
+                    if(prevId != tagtodos.get(i).getTodoId()){
+                        // 이전꺼랑 다르면 이전꺼출력
+                        System.out.println(tagtodos.get(i-1).toString());
+//                        마지막 회차처리
+                        if(i==tagtodos.size()-1){
+                            System.out.println(tagtodos.get(i).toString());
+                        }
                     }else{
-                        // 이전꺼랑 태그 id같으면 합치기
-                        tagtodo.setTagId(tagtodo.getTagId());
+                        // 이전꺼랑 todo id같으면 현재꺼 태그 이름, 아이디 리스트에 추가!
+                        tagtodos.get(i).addTagIds(tagtodos.get(i).getTagId());
+                        tagtodos.get(i).addTagNames(tagtodos.get(i).getTagName());
+//                       * 마지막회차 에서 이전꺼랑 태그id가같으면 마지막께 합쳐지므로 그러기전에 출력.
+                        if(i==tagtodos.size()-1){
+                            System.out.println(tagtodos.get(i).toString());
+                        }
                     }
                     prevId = tagtodos.get(i).getTodoId();
-
                 }
             }
         }catch (SQLException e){

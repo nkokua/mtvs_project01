@@ -15,7 +15,7 @@ public class TagTodo {
     private Date completionDate;
     private char isCompleted;
     private List<Integer> tagIds;
-
+    private List<String> tagNames;
     public TagTodo(int tagId, int todoId, String todo, String tagName, int userId, Date creationDate, Date completionDate, char isCompleted) {
         this.tagId = tagId;
         this.todoId = todoId;
@@ -27,6 +27,8 @@ public class TagTodo {
         this.isCompleted = isCompleted;
         this.tagIds = new ArrayList<>();
         tagIds.add(tagId);
+        this.tagNames = new ArrayList<>();
+        tagNames.add(tagName);
     }
     public TagTodo(int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
         this.todoId = todoId;
@@ -37,6 +39,8 @@ public class TagTodo {
         this.isCompleted = isCompleted;
         this.tagIds = new ArrayList<>();
         tagIds.add(tagId);
+        this.tagNames = new ArrayList<>();
+        tagNames.add(tagName);
     }
 
     public TagTodo(String todo, String tagName) {
@@ -44,6 +48,8 @@ public class TagTodo {
         this.tagName = tagName;
         this.tagIds = new ArrayList<>();
         tagIds.add(tagId);
+        this.tagNames = new ArrayList<>();
+        tagNames.add(tagName);
     }
 
     public TagTodo(int tagId, int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
@@ -56,6 +62,8 @@ public class TagTodo {
         this.isCompleted = isCompleted;
         this.tagIds = new ArrayList<>();
         tagIds.add(tagId);
+        this.tagNames = new ArrayList<>();
+        tagNames.add(tagName);
     }
 
     @Override
@@ -64,7 +72,7 @@ public class TagTodo {
                 "todoId=" + todoId +
                 ", todo='" + todo + '\'' +
                 ", 태그Id=" + tagIds.toString() +
-                ", 태그이름='" + tagName + '\'' +
+                ", 태그이름='" + tagNames.toString() + '\'' +
                 ", 생성일=" + creationDate +
                 ", 완료일=" + completionDate +
                 ", 완료여부=" + isCompleted +
@@ -150,5 +158,13 @@ public class TagTodo {
 
     public void setIsCompleted(char isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public void addTagIds(int tagId) {
+        this.tagIds.add(tagId);
+    }
+
+    public void addTagNames(String tagName) {
+        this.tagNames.add(tagName);
     }
 }
