@@ -19,8 +19,8 @@ public class TagView {
     TagTodoService tagTodoService;
     Tag tag;
 
-    public TagView(Connection con) {
-        tagService = new TagService(con);
+    public TagView(Connection con,int userId) {
+        tagService = new TagService(con,userId);
         tagTodoService = new TagTodoService(con);
         scanner = new Scanner(System.in);
     }

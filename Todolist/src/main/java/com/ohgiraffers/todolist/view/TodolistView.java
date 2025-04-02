@@ -38,10 +38,10 @@ public class TodolistView {
         }
     }
     public TodolistView(Connection con,int userId) {
-        todolistService = new TodolistService(con);
-        tagService = new TagService(con);
+        todolistService = new TodolistService(con,userId);
+        tagService = new TagService(con,userId);
         scanner = new Scanner(System.in);
-        tagView = new TagView(con);
+        tagView = new TagView(con,userId);
         this.userId = userId;
     }
 
@@ -91,12 +91,11 @@ public class TodolistView {
         }
     }
 
-
+//complete!
     private void createTodo() {
         System.out.print("등록할 Todo를 입력하세요: ");
         String todo = scanner.nextLine();
         Todolist todolist = new Todolist(todo);
-        todolist.setuserId(userId);
         try {
             boolean success = todolistService.addTodo(todolist);
             if (success) {
@@ -111,10 +110,14 @@ public class TodolistView {
         }
     }
 
-
+//working on progress
     private void updateTodo(){
         System.out.print("수정할 Todo ID를 입력하세요: ");
         int todoId = getIntInput();
+        if(!todolistService.existsUsersTodoId(todoId)) {
+            System.out.println("잘못된 todoId입력");
+            return;
+        }
 
         System.out.print("새로운 Todo: ");
         String todo = scanner.nextLine();
@@ -138,7 +141,10 @@ public class TodolistView {
     private void deleteTodo(){
         System.out.print("삭제할 Todo ID를 입력하세요: ");
         int todoId = getIntInput();
-
+        if(!todolistService.existsUsersTodoId(todoId)) {
+            System.out.println("잘못된 todoId입력");
+            return;
+        }
         try {
             boolean success = todolistService.deleteTodo(todoId);
             if (success) {
@@ -155,7 +161,6 @@ public class TodolistView {
 
 
     private void getAllTodo() {
-
         try{
             List<TagTodo> tagtodos = todolistService.getAllTodolist();
             int prevId = 0;

@@ -9,9 +9,10 @@ import com.ohgiraffers.todolist.model.TagTodo;
 import com.ohgiraffers.todolist.util.QueryUtil;
 
 public class TagDao extends Dao {
-
-    public TagDao(Connection connection) {
-        super(connection);
+    private final int userId;
+    public TagDao(Connection connection,int userId) {
+        super(connection) ;
+        this.userId = userId;
     }
 
     public List<TagTodo> getTodoByTagId(int tagId, String xmlQry) throws SQLException {

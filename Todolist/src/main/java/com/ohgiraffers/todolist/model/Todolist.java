@@ -24,6 +24,10 @@ public class Todolist {
         this.todo_id = todoId;
     }
 
+    public Todolist(int userId) {
+        this.userId = userId;
+    }
+
 
     public int getTodo_id() {
         return todo_id;

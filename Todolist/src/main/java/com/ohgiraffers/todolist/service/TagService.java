@@ -15,9 +15,9 @@ public class TagService {
     private TagTodoDao tagTodoDao;
     private final Connection con;
 
-    public TagService(Connection con) {
+    public TagService(Connection con,int userId) {
         this.con = con;
-        this.tagDao = new TagDao(con);
+        this.tagDao = new TagDao(con,userId);
         this.tagTodoDao = new TagTodoDao(con);
     }
 

@@ -29,6 +29,7 @@
         FROM todolist tl
         LEFT JOIN tag_todo tt ON tt.todo_id = tl.todo_id
         LEFT JOIN tag t ON t.tag_id = tt.tag_id
+        WHERE user_id = ?
     </query>
 <!--여기까지 JOIN쿼리-->
 
@@ -160,6 +161,12 @@
         SELECT * FROM todolist
         WHERE todo = ?
     </query>
+    <query id="existsTodoIdByUserId">
+        SELECT todo_id
+        FROM todolist
+        WHERE user_id = ? AND todo_id = ?
+    </query>
+
 <!--    여기까지 Todolist-->
 
 </queries>

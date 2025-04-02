@@ -19,12 +19,12 @@ public class TodolistService {
     private TagDao tagDao;
     private final Connection connection;
 
-
-    public TodolistService(Connection con) {
+    public TodolistService(Connection con,int userId) {
         this.connection = con;
-        this.todoDao = new TodolistDao(con);
-        this.tagDao = new TagDao(con);
+        this.todoDao = new TodolistDao(con,userId);
+        this.tagDao = new TagDao(con,userId);
         this.tagTodoDao = new TagTodoDao(con);
+
     }
 
 
@@ -39,7 +39,6 @@ public class TodolistService {
             System.out.println("중복값입니다.");
             return false;
         }
-
 
         return todoDao.addTodolist(todo,"addTodo");
     }
@@ -124,5 +123,7 @@ public class TodolistService {
     }
 
 
-
+    public boolean existsUsersTodoId(int todoId) {
+        return todoDao.existsTodoIdByUserId(todoId);
+    }
 }
