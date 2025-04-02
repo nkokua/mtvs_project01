@@ -19,7 +19,11 @@ class ViewTest {
     }
     @Test
     void run(){
-        Assertions.assertTrue(view.run());
+        try {
+            Assertions.assertTrue(view.run());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     @AfterEach
     void tearDown() {

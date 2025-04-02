@@ -20,8 +20,13 @@ public class UserService {
     }
 
 
-    // 사용자 등록
-    public boolean registerUser(User user) {
+    /**
+     *
+     * 입력 데이터를 userDao.addUser로 넘겨줍니다.
+     * 트랜잭션으로 관리.
+     * */
+    public boolean registerUser(User user) throws SQLException {
+        connection.setAutoCommit(false);
         if (user == null || user.getNickname().isEmpty() || user.getPassword().isEmpty()) {
             System.out.println("입력값이 비어있습니다!");
             return false;
@@ -29,7 +34,14 @@ public class UserService {
         if (userDao.existsUserByEmail(user.getEmail())) {
             throw new IllegalArgumentException("이미 존재하는 유저입니다.");
         }
-        return userDao.addUser(user,"addUser");
+        boolean result = userDao.addUser(user,"addUser");
+        if (result) {
+            connection.commit();
+            return result;
+        }else{
+            connection.rollback();
+            return result;
+        }
     }
 
     public boolean loginUser(User user) {

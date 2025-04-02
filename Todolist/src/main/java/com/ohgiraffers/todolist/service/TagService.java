@@ -19,15 +19,27 @@ public class TagService {
         this.con = con;
         this.tagDao = new TagDao(con);
         this.tagTodoDao = new TagTodoDao(con);
-
     }
 
     public List<Tag> getAllTag() throws SQLException {
-        return tagDao.getAllTag("getAllTag");
+        List<Tag> tag =tagDao.getAllTag("getAllTag");
+        if(tag==null){
+            System.out.println("조회목록이 없거나 오류발생");
+            return null;
+        }
+        return tag;
+
     }
 
     public List<TagTodo> getTodoByTagId(int tagId) throws SQLException {
-        return tagDao.getTodoByTagId(tagId, "getTodoByTagId");
+        List<TagTodo> tagtodos =tagDao.getTodoByTagId(tagId, "getTodoByTagId");
+
+        if(tagtodos==null){
+            System.out.println("조회목록이 없거나 오류발생");
+            return null;
+        }
+        return tagtodos;
+
     }
 
     public boolean createTag(Tag tag) throws SQLException {

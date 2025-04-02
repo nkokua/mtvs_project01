@@ -156,6 +156,10 @@
         DELETE FROM tag_todo
         WHERE todo_id = ?
     </query>
+    <query id="existsTodoName">
+        SELECT * FROM todolist
+        WHERE todo = ?
+    </query>
 <!--    여기까지 Todolist-->
 
 </queries>

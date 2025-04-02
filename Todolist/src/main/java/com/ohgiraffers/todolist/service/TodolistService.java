@@ -26,10 +26,21 @@ public class TodolistService {
         this.tagDao = new TagDao(con);
         this.tagTodoDao = new TagTodoDao(con);
     }
+
+
     public boolean addTodo(Todolist todo) throws SQLException{
+//        공백방지
         if (todo == null || todo.getTodo().isEmpty() ) {
+            System.out.println("공백값입니다.");
             return false;
         }
+//        중복방지
+        if (todoDao.existsTodo(todo.getTodo())){
+            System.out.println("중복값입니다.");
+            return false;
+        }
+
+
         return todoDao.addTodolist(todo,"addTodo");
     }
 
@@ -56,12 +67,19 @@ public class TodolistService {
 
     }
 
+
+    /** TODO를 수정합니다
+     * */
     public boolean updateTodo(Todolist todolist) throws SQLException {
-        // 1️⃣ 기존 사용자 존재 여부 확인
+        // 1️⃣ todo 존재 여부 확인
         Todolist existsTodolist = todoDao.getTodoById(todolist.getTodo_id());
 
         if (existsTodolist == null) {
             throw new IllegalArgumentException("수정할 Todo를 찾을 수 없습니다.");
+        }
+        if (todolist.getTodo()==null){
+            throw new IllegalArgumentException("Todo가 공백입니다.");
+
         }
         // 3️⃣ 업데이트 수행
         boolean result = todoDao.updateTodo(todolist);
@@ -71,6 +89,12 @@ public class TodolistService {
         return result;
     }
 
+
+
+    /**
+     * 완료여부를 Y면 N
+     * N이면 Y로 바꿔줍니다.
+     * */
     public boolean updateCompletionTodo(int todoId) throws SQLException {
         Todolist todo = todoDao.getTodoById(todoId);
         if (todo == null) {

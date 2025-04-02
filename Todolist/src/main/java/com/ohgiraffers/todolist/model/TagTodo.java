@@ -1,6 +1,9 @@
 package com.ohgiraffers.todolist.model;
 // tagtodoDto로 대체!!
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 // 태그 투두를 둘다 담는 경우
 public class TagTodo {
     private int tagId;
@@ -11,6 +14,7 @@ public class TagTodo {
     private Date creationDate;
     private Date completionDate;
     private char isCompleted;
+    private List<Integer> tagIds;
 
     public TagTodo(int tagId, int todoId, String todo, String tagName, int userId, Date creationDate, Date completionDate, char isCompleted) {
         this.tagId = tagId;
@@ -21,6 +25,8 @@ public class TagTodo {
         this.creationDate = creationDate;
         this.completionDate = completionDate;
         this.isCompleted = isCompleted;
+        this.tagIds = new ArrayList<>();
+        tagIds.add(tagId);
     }
     public TagTodo(int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
         this.todoId = todoId;
@@ -29,11 +35,15 @@ public class TagTodo {
         this.creationDate = creationDate;
         this.completionDate = completionDate;
         this.isCompleted = isCompleted;
+        this.tagIds = new ArrayList<>();
+        tagIds.add(tagId);
     }
 
     public TagTodo(String todo, String tagName) {
         this.todo = todo;
         this.tagName = tagName;
+        this.tagIds = new ArrayList<>();
+        tagIds.add(tagId);
     }
 
     public TagTodo(int tagId, int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
@@ -44,6 +54,8 @@ public class TagTodo {
         this.creationDate = creationDate;
         this.completionDate = completionDate;
         this.isCompleted = isCompleted;
+        this.tagIds = new ArrayList<>();
+        tagIds.add(tagId);
     }
 
     @Override
@@ -51,13 +63,15 @@ public class TagTodo {
         return "TagTodo{" +
                 "todoId=" + todoId +
                 ", todo='" + todo + '\'' +
-                ", 태그Id=" + tagId +
+                ", 태그Id=" + tagIds.toString() +
                 ", 태그이름='" + tagName + '\'' +
                 ", 생성일=" + creationDate +
                 ", 완료일=" + completionDate +
                 ", 완료여부=" + isCompleted +
                 '}';
     }
+
+
 
     public TagTodo(int tagId, String tagName) {
         this.tagId = tagId;

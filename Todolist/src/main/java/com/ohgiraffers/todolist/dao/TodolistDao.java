@@ -154,6 +154,21 @@ public Todolist getTodoById(int todoId) throws SQLException {
         return tagTodos;
     }
 
+// Todoname존재하는지확인.
+    public boolean existsTodo(String todo) {
+        String query = QueryUtil.getQuery("existsTodoName");
+        try(PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setString(1,todo);
+            try(ResultSet rs = ptmt.executeQuery()) {
+                if (rs.next()) {
+//                    * 첫 컬럼 (id)
+                    return rs.getInt(1) > 0 ;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-
+        return false;
+    }
 }

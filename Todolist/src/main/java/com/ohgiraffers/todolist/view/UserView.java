@@ -6,7 +6,6 @@ import com.ohgiraffers.todolist.service.UserService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,12 +22,18 @@ public class UserView {
 
 
 
-    public boolean createUser(){
+    public boolean createUser() throws SQLException {
        while(true){
             System.out.println("회원가입페이지 , 닉네임을 입력해주세요");
             nickname = input.nextLine();
             System.out.println("회원가입페이지 , 이메일을 입력해주세요");
             email = input.nextLine();
+            boolean isValid = email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+            if(!isValid){
+                System.out.println("이메일 형식이 아닙니다.");
+                System.out.println("가입 취소");
+                return false;
+            }
             System.out.println("회원가입페이지 , 비밀번호를 입력해주세요");
             password = input.nextLine();
             System.out.println("회원가입페이지 , 가입하시겠습니까? y/n");
@@ -36,11 +41,11 @@ public class UserView {
 
             if(inputValue.equals("y")){
                 /*서비스로 전달*/
-                user= new User(nickname,email,password);
-                userService.registerUser(user);
-                return true;
+                user = new User(nickname,email,password);
+                return userService.registerUser(user);
             }else if(inputValue.equals("n")){
-                return true;
+                System.out.println("가입 취소");
+                return false;
             }else {
                     System.out.println("제대로된 값을 입력해주세요.");
             }

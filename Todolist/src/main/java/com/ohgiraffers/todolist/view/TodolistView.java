@@ -14,13 +14,26 @@ import java.util.List;
 import java.util.Scanner;
 
 public class TodolistView {
-    private Scanner scanner ;
-    private String inputValue;
+    private final Scanner scanner ;
     TodolistService todolistService;
     TagService tagService;
-    Todolist todo;
-    private TagView tagView;
+    private final TagView tagView;
 
+/** 정수만을 받게합니다. (예외처리)
+ * @return Integer.parseInt(scanner.nextLine());
+ * */
+    private int getIntInput() {
+        String input = scanner.nextLine();
+        int result = 0;
+        while (true) {
+            try {
+                result = Integer.parseInt(input); // nextLine()으로 입력 받고 변환
+                return result;
+            } catch (NumberFormatException e) {
+                System.out.println("⚠ 올바른 숫자를 입력하세요.");
+            }
+        }
+    }
     public TodolistView(Connection con) {
         todolistService = new TodolistService(con);
         tagService = new TagService(con);
@@ -40,8 +53,7 @@ public class TodolistView {
             System.out.println("8.완료 체크하기\n:");
 
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // 개행 문자 처리
+            int choice = getIntInput();
             switch(choice){
                 case 1:
                     createTodo();
@@ -64,7 +76,7 @@ public class TodolistView {
                     checkCompletionTodo();
                     break;
                 default:
-                    System.out.println("잘못된 값이 입력되었습니다.");
+                    System.out.println("잘못된 케이스입니다.");
             }
 
 
@@ -94,12 +106,12 @@ public class TodolistView {
 
     private void updateTodo(){
         System.out.print("수정할 Todo ID를 입력하세요: ");
-        int todoId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
+        int todoId = getIntInput();
 
         System.out.print("새로운 Todo: ");
         String todo = scanner.nextLine();
         Todolist todolist = new Todolist(todo,todoId);
+
 
         try {
             boolean success = todolistService.updateTodo(todolist);
@@ -116,19 +128,18 @@ public class TodolistView {
     }
 
     private void deleteTodo(){
-        System.out.print("삭제할 사용자 ID를 입력하세요: ");
-        int todoId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
+        System.out.print("삭제할 Todo ID를 입력하세요: ");
+        int todoId = getIntInput();
 
         try {
             boolean success = todolistService.deleteTodo(todoId);
             if (success) {
-                System.out.println("사용자가 성공적으로 삭제되었습니다.");
+                System.out.println("Todo가 성공적으로 삭제되었습니다.");
             } else {
-                System.out.println("사용자 삭제에 실패하였습니다.");
+                System.out.println("Todo 삭제에 실패하였습니다.");
             }
         } catch (SQLException e) {
-            System.out.println("사용자 삭제 중 오류가 발생했습니다.");
+            System.out.println("Todo 삭제 중 오류가 발생했습니다.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -136,25 +147,44 @@ public class TodolistView {
 
 
     private void getAllTodo() {
+
         try{
             List<TagTodo> tagtodos = todolistService.getAllTodolist();
+            int prevId = 0;
             if (tagtodos.isEmpty()) {
                 System.out.println("📌 조회된 Todolist가 없습니다..");
             } else {
                 System.out.println("\n📌 Todolist 목록:");
-                for (TagTodo tagtodo : tagtodos) {
-                    System.out.println(tagtodo.toString());
+
+                for (int i = 1; i<tagtodos.size(); i++ ) {
+                    nextId
+                    /*
+                    * 첫단계에서출력x
+                    * -----
+                    * 이전꺼와 todonid값과 태그ID값 각각비교
+                    * todoID같으면 태그ID,태그이름 합치기 아니면 출력
+                    * 1                 2       3
+                    * 첫번째꺼,다음꺼
+                    * */
+                    if(prevId != tagtodos.get(i).getTagId()){
+                        // 이전꺼랑 다르면 출력
+                        System.out.println(tagtodos.get(i).toString());
+                    }else{
+                        // 이전꺼랑 태그 id같으면 합치기
+                        tagtodo.setTagId(tagtodo.getTagId());
+                    }
+                    prevId = tagtodos.get(i).getTodoId();
+
                 }
             }
         }catch (SQLException e){
-            System.out.println("t o d o l i s t 조 회 오 류 발 생");
+            System.out.println("todolist 조회오류발생");
         }
     }
 
     private void checkCompletionTodo(){
         System.out.print("완료여부를 체크할 id를 입력해주세요");
-        int todoId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
+        int todoId = getIntInput();
 
         try {
             boolean success = todolistService.updateCompletionTodo(todoId);

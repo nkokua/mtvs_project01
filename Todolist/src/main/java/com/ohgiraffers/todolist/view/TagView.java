@@ -18,10 +18,28 @@ public class TagView {
     TagService tagService;
     TagTodoService tagTodoService;
     Tag tag;
+
     public TagView(Connection con) {
         tagService = new TagService(con);
         tagTodoService = new TagTodoService(con);
         scanner = new Scanner(System.in);
+    }
+
+
+    /** 정수만을 받게합니다. (예외처리)
+     * @return Integer.parseInt(scanner.nextLine());
+     * */
+    private int getIntInput() {
+        String input = scanner.nextLine();
+        int result = 0;
+        while (true) {
+            try {
+                result = Integer.parseInt(input); // nextLine()으로 입력 받고 변환
+                return result;
+            } catch (NumberFormatException e) {
+                System.out.println("⚠ 올바른 숫자를 입력하세요.");
+            }
+        }
     }
 
     public void showMenu() {
@@ -35,7 +53,8 @@ public class TagView {
             System.out.println("6.태그 부여\n");
             System.out.println("7.특정 태그 조회\n");
 
-            int choice = scanner.nextInt();
+            int choice = getIntInput();
+
             switch (choice) {
                 case 1:
                     createTag();
@@ -67,11 +86,9 @@ public class TagView {
 
     private void giveTagTodo() {
         System.out.println("부여할 태그ID");
-        int tagId = scanner.nextInt();
-        scanner.nextLine();
+        int tagId = getIntInput();
         System.out.println("부여할 todoID");
-        int todoId = scanner.nextInt();
-        scanner.nextLine();
+        int todoId = getIntInput();
         try {
             boolean success = tagTodoService.createTagTodo(tagId,todoId);
             if (success) {
@@ -107,8 +124,7 @@ public class TagView {
 
     private void updateTag() {
         System.out.print("수정할 태그 id: ");
-        int tagId = scanner.nextInt();
-        scanner.nextLine();
+        int tagId = getIntInput();
         System.out.print("태그이름: ");
         String tagName = scanner.nextLine();
 
@@ -128,8 +144,7 @@ public class TagView {
     }
     private void deleteTag() {
         System.out.print("삭제할 태그 ID를 입력하세요: ");
-        int tagId = scanner.nextInt();
-        scanner.nextLine(); // 개행 문자 처리
+        int tagId = getIntInput();
         
         try {
             boolean success = tagService.deleteTag(tagId);
@@ -156,14 +171,13 @@ public class TagView {
                 }
             }
         }catch (SQLException e){
-            System.out.println("t o d o l i s t 조 회 오 류 발 생");
+            System.out.println("todolist조회오류발생");
         }
     }
     private void getTodoByTagId() {
         try{
             System.out.print("검색할 태그 ID를 입력하세요: ");
-            int tagId = scanner.nextInt();
-            scanner.nextLine(); // 개행 문자 처리
+            int tagId = getIntInput();
 
             List<TagTodo> tagtodos = tagService.getTodoByTagId(tagId);
             if (tagtodos.isEmpty()) {
@@ -175,7 +189,7 @@ public class TagView {
                 }
             }
         }catch (SQLException e){
-            System.out.println("t o d o l i s t 조 회 오 류 발 생");
+            System.out.println("todolist조회오류발생");
         }
     }
 }
