@@ -74,6 +74,7 @@ public class UserDao extends Dao {
             try(ResultSet rs = ptmt.executeQuery()) {
                 if (rs.next()) {
                     user= new User(
+                            rs.getInt("userId"),
                             rs.getString("email"),
                             rs.getString("password")
                     );

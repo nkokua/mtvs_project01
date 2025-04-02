@@ -20,9 +20,6 @@ public class Application {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
-
         JDBCConnection.close();
     }
 

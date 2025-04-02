@@ -9,10 +9,11 @@ public class ShowMain {
     private String inputValue;
     private UserView userView ;
     private TodolistView todolistView;
+    private Connection connection;
     public ShowMain(Connection con) {
       userView = new UserView(con);
       input = new Scanner(System.in);
-      todolistView = new TodolistView(con);
+      connection = con;
     }
 
     public boolean run() throws SQLException {
@@ -33,9 +34,8 @@ public class ShowMain {
                      }
                      break;
                  case "2":
-                     if(userView.loginUser()){
-                         todolistView.showMenu();
-                     }
+                     todolistView = new TodolistView(connection,userView.loginUser());
+                     todolistView.showMenu();
                      break;
                  case "3":
                      return true;

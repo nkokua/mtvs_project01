@@ -18,6 +18,9 @@ public class TodolistView {
     TodolistService todolistService;
     TagService tagService;
     private final TagView tagView;
+//
+    private final int userId;
+
 
 /** 정수만을 받게합니다. (예외처리)
  * @return Integer.parseInt(scanner.nextLine());
@@ -34,14 +37,19 @@ public class TodolistView {
             }
         }
     }
-    public TodolistView(Connection con) {
+    public TodolistView(Connection con,int userId) {
         todolistService = new TodolistService(con);
         tagService = new TagService(con);
         scanner = new Scanner(System.in);
         tagView = new TagView(con);
+        this.userId = userId;
     }
 
     public void showMenu() {
+        if(userId == -1){
+            System.out.println("로그인실패");
+            return;
+        }
         while(true){
             System.out.println("Todolist 페이지입니다 원하시는 기능을 입력해주세요!!");
             System.out.println("1.생성\n");
@@ -88,7 +96,7 @@ public class TodolistView {
         System.out.print("등록할 Todo를 입력하세요: ");
         String todo = scanner.nextLine();
         Todolist todolist = new Todolist(todo);
-
+        todolist.setuserId(userId);
         try {
             boolean success = todolistService.addTodo(todolist);
             if (success) {

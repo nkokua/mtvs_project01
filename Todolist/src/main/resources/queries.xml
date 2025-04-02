@@ -116,7 +116,7 @@
     </query>
     <!--    비밀번호 비교를 위한 쿼리-->
     <query id="getUserByEmail">
-        SELECT u.email AS "email" , u.password AS "password"
+        SELECT u.user_id AS "userId" ,u.email AS "email" , u.password AS "password"
         FROM user u
         WHERE u.email = ?
     </query>

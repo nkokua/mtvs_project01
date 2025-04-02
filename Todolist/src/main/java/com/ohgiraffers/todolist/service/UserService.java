@@ -44,20 +44,20 @@ public class UserService {
         }
     }
 
-    public boolean loginUser(User user) {
+    public int loginUser(User user) {
         if (user == null || user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             System.out.println("입력값이 비어있습니다!");
-            return false;
+            return -1;
         }
         // 이메일 존재여부 확인후 비밀번호 일치여부 확인.
         if(userDao.existsUserByEmail(user.getEmail())) {
             if(userDao.getUser(user.getEmail()).getPassword().equals(user.getPassword())){
                 System.out.println("환영합니다.");
-                return true;
+                return userDao.getUser(user.getEmail()).getuserId();
             }
         };
         System.out.println("로그인 실패입니다.");
-        return false;
+        return -1;
     }
 
     public List<User> getAllUser() throws SQLException {

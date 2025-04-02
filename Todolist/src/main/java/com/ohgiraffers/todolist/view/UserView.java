@@ -54,7 +54,7 @@ public class UserView {
        }
     }
 
-    public boolean loginUser() {
+    public int loginUser() {
         while(true){
             System.out.println("로그인 페이지 , 이메일을 입력해주세요");
             email = input.nextLine();
@@ -69,7 +69,7 @@ public class UserView {
                 return userService.loginUser(user);
             }else if(inputValue.equals("n")){
                 System.out.println("로그인 실패");
-                return false;
+                return -1;
             }else {
                 System.out.println("제대로된 값을 입력해주세요.");
             }

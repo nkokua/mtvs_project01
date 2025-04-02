@@ -27,6 +27,12 @@ public class User {
         this.userId = userId;
     }
 
+    public User(int userId, String email, String password) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +
