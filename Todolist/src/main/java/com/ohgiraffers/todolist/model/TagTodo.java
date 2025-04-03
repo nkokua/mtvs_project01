@@ -16,6 +16,7 @@ public class TagTodo {
     private char isCompleted;
     private List<Integer> tagIds;
     private List<String> tagNames;
+    private String stringTagIds;
     public TagTodo(int tagId, int todoId, String todo, String tagName, int userId, Date creationDate, Date completionDate, char isCompleted) {
         this.tagId = tagId;
         this.todoId = todoId;
@@ -30,7 +31,7 @@ public class TagTodo {
         this.tagNames = new ArrayList<>();
         tagNames.add(tagName);
     }
-    public TagTodo(int todoID, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
+    public TagTodo(String tagId, int todoId, String todo, String tagName, Date creationDate, Date completionDate, char isCompleted) {
         this.todoId = todoId;
         this.todo = todo;
         this.tagName = tagName;
@@ -38,9 +39,10 @@ public class TagTodo {
         this.completionDate = completionDate;
         this.isCompleted = isCompleted;
         this.tagIds = new ArrayList<>();
-        tagIds.add(tagId);
+        tagIds.add(this.tagId);
         this.tagNames = new ArrayList<>();
         tagNames.add(tagName);
+        this.stringTagIds = tagId;
     }
 
     public TagTodo(String todo, String tagName) {
@@ -66,13 +68,15 @@ public class TagTodo {
         tagNames.add(tagName);
     }
 
+
+
     @Override
     public String toString() {
         return "TagTodo{" +
                 "todoId=" + todoId +
                 ", todo='" + todo + '\'' +
-                ", 태그Id=" + tagIds.toString() +
-                ", 태그이름='" + tagNames.toString() + '\'' +
+                ", 태그Id=" + stringTagIds +
+                ", 태그이름='" + tagName + '\'' +
                 ", 생성일=" + creationDate +
                 ", 완료일=" + completionDate +
                 ", 완료여부=" + isCompleted +

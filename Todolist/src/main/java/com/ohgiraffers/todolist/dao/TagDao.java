@@ -80,25 +80,27 @@ public class TagDao extends Dao {
     public List<Tag> getAllTag(String xmlQry) {
         List<Tag> tag = new ArrayList<>();
         String query = QueryUtil.getQuery(xmlQry); // XML에서 쿼리로
-        try (PreparedStatement pstmt = connection.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setInt(1,userId);
+            ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
                 tag.add(new Tag(
                         rs.getInt("tag_id"),
                         rs.getString("tag_name")
                 ));
-            }
+        }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return tag;
     }
-    //같은이름의 태그존재조회. 수정요망
+    //같은이름의 태그존재조회.
     public boolean existsTag(String tagName) throws SQLException {
         String query = QueryUtil.getQuery("existsTag");
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, tagName);
-            try (ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setString(1, tagName);
+            ptmt.setInt(2,userId);
+            try (ResultSet rs = ptmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
             }
         }
@@ -109,17 +111,19 @@ public class TagDao extends Dao {
             return false;
         }
         String query = QueryUtil.getQuery("createTag");
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, tag.getTagName());
-            return pstmt.executeUpdate() > 0;
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setString(1, tag.getTagName());
+            ptmt.setInt(2,userId);
+            return ptmt.executeUpdate() > 0;
         }
     }
 
     public Tag getTagById(int tagId) throws SQLException {
         String query = QueryUtil.getQuery("getTagById");
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, tagId);
-            try (ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setInt(1, tagId);
+            ptmt.setInt(2,userId);
+            try (ResultSet rs = ptmt.executeQuery()) {
                 if (rs.next()) {
                     return new Tag(rs.getInt("id"), rs.getString("name"));
                 }
@@ -130,18 +134,19 @@ public class TagDao extends Dao {
 
     public boolean deleteTag(int tagId) throws SQLException {
         String query = QueryUtil.getQuery("deleteTag");
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, tagId);
-            return pstmt.executeUpdate() > 0;
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setInt(1, tagId);
+            ptmt.setInt(2,userId);
+            return ptmt.executeUpdate() > 0;
         }
     }
 
     public boolean updateTag(Tag tag) throws SQLException {
         String query = QueryUtil.getQuery("updateTag");
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, tag.getTagName());
-            pstmt.setInt(2, tag.getTagId());
-            return pstmt.executeUpdate() > 0;
+        try (PreparedStatement ptmt = connection.prepareStatement(query)) {
+            ptmt.setString(1, tag.getTagName());
+            ptmt.setInt(2, tag.getTagId());
+            return ptmt.executeUpdate() > 0;
         }
     }
 
@@ -159,7 +164,24 @@ public class TagDao extends Dao {
 
     }
 
+    public boolean existsTagIdByUserId(int tagId){
+        String query = QueryUtil.getQuery("existsTagIdByUserId");
 
+        try(PreparedStatement ptmt = connection.prepareStatement(query)){
+            ptmt.setInt(1,userId);
+            ptmt.setInt(2,tagId);
+            try(ResultSet rs = ptmt.executeQuery()) {
+                if (rs.next()) {
+//                   id가 존재하는 지 확인.
+                    return rs.getInt(1) > 0 ;
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }
 
 

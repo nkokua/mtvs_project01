@@ -19,18 +19,38 @@
     </query>
     <query id="getAllTodolist">
         SELECT
-        tl.todo_id AS "TodoID",
+        tl.todo_id AS "TodoId",
         tl.todo AS "Todo",
-        t.tag_id AS "TagId",
-        t.tag_name AS "태그명",
+        GROUP_CONCAT(t.tag_id SEPARATOR ', ') AS "TagId",
+        GROUP_CONCAT(t.tag_name SEPARATOR ', ') AS "태그명",
         tl.creation_date AS "생성일",
         tl.completion_date "완료일",
         tl.iscompleted AS "완료 여부"
         FROM todolist tl
         LEFT JOIN tag_todo tt ON tt.todo_id = tl.todo_id
         LEFT JOIN tag t ON t.tag_id = tt.tag_id
-        WHERE user_id = ?
+        WHERE tl.user_id = ?
+        GROUP BY tl.todo_id , tl.todo , tl.creation_date, tl.completion_date , tl.iscompleted
+
     </query>
+<!--
+ SELECT
+        A.todo_id,
+        A.user_id,
+        A.todo,
+        A.creation_date,
+        A.iscompleted,
+        GROUP_CONCAT(C.tag_id SEPARATOR ', ') AS tag_id,
+        GROUP_CONCAT(C.tag_name SEPARATOR ', ') AS tag_name
+        FROM todolist A
+        LEFT JOIN tag_todo B ON A.todo_id = B.todo_id
+        LEFT JOIN tag C ON B.tag_id = C.tag_id
+        GROUP BY A.todo_id, A.user_id, A.todo, A.creation_date, A.iscompleted
+        HAVING  1=1
+        AND A.todo_id = ?
+        AND A.user_id = ?
+
+-->
 <!--여기까지 JOIN쿼리-->
 
 
@@ -38,37 +58,43 @@
 <!--태그 쿼리-->
     <!--생성-->
     <query id="createTag">
-        INSERT INTO tag (tag_name)
-        VALUES(?)
+        INSERT INTO tag (tag_name,user_id)
+        VALUES(?,?)
     </query>
     <!--태그수정-->
     <query id="updateTag">
         UPDATE tag
         SET tag_name = ?
-        WHERE tag_id = ?
+        WHERE tag_id = ? AND user_id = ?
     </query>
     <query id="deleteTag">
         DELETE FROM tag
-        WHERE tag_id = ?
+        WHERE tag_id = ? AND user_id = ?
     </query>
     <!--태그전체조회 -->
     <query id="getAllTag">
         SELECT *
         FROM tag
+        WHERE user_id = ?
     </query>
     <query id="getTagById">
         SELECT t.tag_id AS "id" , t.tag_name AS "name"
         FROM tag t
-        WHERE tag_id = ?
+        WHERE tag_id = ? AND user_id = ?
     </query>
     <query id="existsTag">
         SELECT COUNT(*)
         FROM tag
-        WHERE tag_name = ?
+        WHERE tag_name = ? AND user_id = ?
     </query>
     <query id="deleteTagtodoByTag">
         DELETE FROM tag_todo
         WHERE tag_id = ?
+    </query>
+    <query id="existsTagIdByUserId">
+        SELECT tag_id
+        FROM tag
+        WHERE user_id = ? AND tag_id = ?
     </query>
 <!--    여기까지 태그쿼리-->
 
@@ -159,7 +185,7 @@
     </query>
     <query id="existsTodoName">
         SELECT * FROM todolist
-        WHERE todo = ?
+        WHERE todo = ? AND user_id = ?
     </query>
     <query id="existsTodoIdByUserId">
         SELECT todo_id

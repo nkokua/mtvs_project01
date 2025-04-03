@@ -77,4 +77,10 @@ public class TagService {
         }
         return tagDao.updateTag(tag);
     }
+
+
+
+    public boolean existsUsersTagId(int tagId) {
+        return tagDao.existsTagIdByUserId(tagId);
+    }
 }

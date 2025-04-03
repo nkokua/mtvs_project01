@@ -141,8 +141,8 @@ public Todolist getTodoById(int todoId) throws SQLException {
 //                                tl.completion_date "완료일",
 //                                tl.iscompleted AS "완료 여부"
                                 tagTodos.add(new TagTodo(
-                                        rs.getInt("TagId"),
-                                rs.getInt("TodoID"),
+                                        rs.getString("TagId"),
+                                rs.getInt("TodoId"),
                                 rs.getString("Todo"),
                                 rs.getString("태그명"),
                                 rs.getDate("생성일"),
@@ -163,6 +163,7 @@ public Todolist getTodoById(int todoId) throws SQLException {
         String query = QueryUtil.getQuery("existsTodoName");
         try(PreparedStatement ptmt = connection.prepareStatement(query)) {
             ptmt.setString(1,todo);
+            ptmt.setInt(2,userId);
             try(ResultSet rs = ptmt.executeQuery()) {
                 if (rs.next()) {
 //                    * 첫 컬럼 (id)
